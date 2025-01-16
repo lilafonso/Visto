@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reconhecimento de Texto OCR</title>
+    <script src='https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js'></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #resultado {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            min-height: 100px;
+        }
+        #camera, #foto {
+            width: 100%;
+            max-width: 640px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Reconhecimento de Texto em Imagens</h1>
+    <p>Capture uma imagem com texto para fazer o reconhecimento OCR:</p>
+
+    <video id="camera" autoplay></video>
+    <button onclick="capturarFoto()">Capturar Foto</button>
+    <canvas id="foto" style="display:none;"></canvas>
+    <button onclick="reconhecerTexto()" style="display:none;" id="btnReconhecer">Reconhecer Texto</button>
+    
+    <div id="resultado"></div>
+
+    <script>
+        let video = document.getElementById('camera');
+        let canvas = document.getElementById('foto');
+        let btnReconhecer = document.getElementById('btnReconhecer');
+        let resultado = document.getElementById('resultado');
+
+        // Iniciar câmera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(erro => {
+                console.error('Erro ao acessar a câmera:', erro);
+                alert('Erro ao acessar a câmera. Verifique as permissões.');
+            });
+
+        function capturarFoto() {
+            canvas.style.display = 'block';
+            btnReconhecer.style.display = 'block';
+            video.style.display = 'none';
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+        }
+
+        function reconhecerTexto() {
+            resultado.innerHTML = 'Processando...';
+            
+            Tesseract.recognize(
+                canvas,
+                'por', // Idioma português
+                { logger: m => console.log(m) }
+            ).then(({ data: { text } }) => {
+                resultado.innerHTML = text;
+            }).catch(erro => {
+                console.error('Erro no reconhecimento:', erro);
+                resultado.innerHTML = 'Erro no reconhecimento de texto.';
+            });
+        }
+    </script>
+</body>
+</html>
