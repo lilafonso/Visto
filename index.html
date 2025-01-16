@@ -29,11 +29,11 @@
     <h1>Reconhecimento de Texto em Imagens</h1>
     <p>Capture uma imagem com texto para fazer o reconhecimento OCR:</p>
 
-    <button onclick="trocarCamera()" id="btnTrocarCamera">Trocar Câmera</button>
+    <!-- <button onclick="trocarCamera()" id="btnTrocarCamera">Trocar Câmera</button> -->
     <video id="camera" autoplay></video>
     <button onclick="capturarFoto()">Capturar Foto</button>
     <canvas id="foto" style="display:none;"></canvas>
-    <button onclick="reconhecerTexto()" style="display:none;" id="btnReconhecer">Reconhecer Texto</button>
+    <!-- <button onclick="reconhecerTexto()" style="display:none;" id="btnReconhecer">Reconhecer Texto</button> -->
     
     <div id="resultado"></div>
 
@@ -75,6 +75,7 @@
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             canvas.getContext('2d').drawImage(video, 0, 0);
+            reconhecerTexto();
         }
 
         function reconhecerTexto() {
