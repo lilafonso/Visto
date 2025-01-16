@@ -80,6 +80,29 @@
             let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             let data = imageData.data;
             
+
+            // Aumentar DPI para 300
+            let tempCanvas = document.createElement('canvas');
+            let scale = 300 / 96; // 96 é o DPI padrão
+            tempCanvas.width = canvas.width * scale;
+            tempCanvas.height = canvas.height * scale;
+            let tempCtx = tempCanvas.getContext('2d');
+            
+            // Configurar para melhor qualidade de redimensionamento
+            tempCtx.imageSmoothingEnabled = true;
+            tempCtx.imageSmoothingQuality = 'high';
+            
+            // Redimensionar a imagem
+            tempCtx.drawImage(canvas, 0, 0, tempCanvas.width, tempCanvas.height);
+            
+            // Copiar de volta para o canvas original
+            canvas.width = tempCanvas.width;
+            canvas.height = tempCanvas.height;
+            ctx.drawImage(tempCanvas, 0, 0);
+            
+            // Atualizar o contexto e os dados da imagem
+            imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            data = imageData.data;
             // Converter para escala de cinza e aumentar contraste
             for (let i = 0; i < data.length; i += 4) {
                 let r = data[i];
@@ -101,6 +124,7 @@
             }
             
             ctx.putImageData(imageData, 0, 0);
+
             reconhecerTexto();
         }
 
