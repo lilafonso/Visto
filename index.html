@@ -44,14 +44,28 @@
         let resultado = document.getElementById('resultado');
 
         // Iniciar câmera
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(stream => {
-                video.srcObject = stream;
-            })
-            .catch(erro => {
-                console.error('Erro ao acessar a câmera:', erro);
-                alert('Erro ao acessar a câmera. Verifique as permissões.');
-            });
+        // Tentar iniciar com a câmera traseira primeiro
+        navigator.mediaDevices.getUserMedia({
+            video: {
+                facingMode: { exact: "environment" }
+            }
+        })
+        .then(stream => {
+            video.srcObject = stream;
+        })
+        .catch(erro => {
+            console.error('Erro ao acessar câmera traseira:', erro);
+            // Se falhar, tenta acessar qualquer câmera disponível
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    video.srcObject = stream;
+                })
+                .catch(erroFallback => {
+                    console.error('Erro ao acessar câmera:', erroFallback);
+                    alert('Não foi possível acessar nenhuma câmera.');
+                });
+        });
+       
 
         function capturarFoto() {
             canvas.style.display = 'block';
@@ -61,35 +75,6 @@
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             canvas.getContext('2d').drawImage(video, 0, 0);
-        }
-
-        function trocarCamera() {
-            // Parar o stream atual
-            if (video.srcObject) {
-                video.srcObject.getTracks().forEach(track => track.stop());
-            }
-
-            // Tentar acessar a câmera traseira
-            navigator.mediaDevices.getUserMedia({
-                video: {
-                    facingMode: { exact: "environment" } // Força o uso da câmera traseira
-                }
-            })
-            .then(stream => {
-                video.srcObject = stream;
-            })
-            .catch(erro => {
-                console.error('Erro ao trocar câmera:', erro);
-                // Se falhar, tenta acessar qualquer câmera disponível
-                navigator.mediaDevices.getUserMedia({ video: true })
-                    .then(stream => {
-                        video.srcObject = stream;
-                    })
-                    .catch(erroFallback => {
-                        console.error('Erro ao acessar câmera:', erroFallback);
-                        alert('Não foi possível acessar a câmera traseira.');
-                    });
-            });
         }
 
         function reconhecerTexto() {
