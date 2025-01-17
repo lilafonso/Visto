@@ -48,6 +48,13 @@
         navigator.mediaDevices.getUserMedia({
             video: {
                 facingMode: { exact: "environment" }
+            , width: { min: 1280, ideal: 1920 },
+            height: { min: 720, ideal: 1080 },
+            zoom: true,
+            advanced: [{
+                exposureMode: "manual",
+                focusMode: "continuous"
+            }]
             }
         })
         .then(stream => {
