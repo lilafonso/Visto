@@ -45,7 +45,7 @@ Equipe:`;
         function importarPref() {
             const input = document.createElement('input');
             input.type = 'file';
-            input.accept = '.csv';
+            input.accept = '.txt';
             
             input.onchange = function(e) {
                 const arquivo = e.target.files[0];
@@ -69,11 +69,11 @@ Equipe:`;
             const dadosUTF8 = encoder.encode(document.getElementById('dadosBase').value);
             const dadosVerificados = decoder.decode(dadosUTF8);
             const dadosBase = document.getElementById('dadosBase').value;
-            const blob = new Blob([dadosBase], { type: 'text/csv' });
+            const blob = new Blob([dadosBase], { type: 'text/txt' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'pref.csv';
+            a.download = 'pref.txt';
             a.click();
             window.URL.revokeObjectURL(url);
         }
@@ -442,6 +442,17 @@ Equipe:`;
                 const ultimaLinha = linhas[linhas.length - 2].trim();
                 delegado = ultimaLinha;
             }
+            // Procurar Delegacia
+            let delegacia = '';
+            //const regexDelegacia = /(?:\d{3}\s*[-]?\s*)?([^,\n]*Delegacia[^,\n]*)/i;
+            const regexDelegacia = /Delegacia :?\s*([^\n]+)/i;
+            const matchDelegacia = texto.match(regexDelegacia);
+            
+            if (matchDelegacia) {
+                // Pega o grupo capturado que exclui os 3 dígitos iniciais
+                delegacia = matchDelegacia[1].trim().slice(6);
+                console.log(matchDelegacia);
+            }
             // Montar texto de resultado
 
             const resultado = `Natureza do Exame: ${naturezaDoExame}
@@ -453,6 +464,7 @@ Marca: ${marca}
 Cor: ${cor}
 Protocolo: ${protocolo}
 BO: ${bo}
+Delegacia:${delegacia}
 Delegado:${delegado}`;
 
             textoAnalisado.value = resultado;
