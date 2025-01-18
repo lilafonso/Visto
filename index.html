@@ -35,7 +35,10 @@
     <canvas id="foto" style="display:none;"></canvas>
     <!-- <button onclick="reconhecerTexto()" style="display:none;" id="btnReconhecer">Reconhecer Texto</button> -->
     
-    <div id="resultado"></div>
+    <div id="resultado">
+    
+
+    </div>
 
     <script>
         let video = document.getElementById('camera');
@@ -136,9 +139,25 @@
         }
 
         function reconhecerTexto() {
-            resultado.innerHTML = 'Processando...';
-            resultado.innerHTML = '<textarea id="textoReconhecido" style="width: 100%; height: 200px;"></textarea>';
-            const textoReconhecido = document.getElementById('textoReconhecido');
+            const resultado = document.getElementById('resultado');
+            
+            // Limpar o conteúdo anterior
+            while (resultado.firstChild) {
+                resultado.removeChild(resultado.firstChild);
+            }
+            
+            // Criar e adicionar elemento de "Processando..."
+            const processando = document.createElement('p');
+            processando.textContent = 'Processando...';
+            resultado.appendChild(processando);
+            
+            // Criar e adicionar textarea
+            const textarea = document.createElement('textarea');
+            textarea.id = 'textoReconhecido';
+            textarea.style.width = '100%';
+            textarea.style.height = '200px';
+            resultado.appendChild(textarea);
+
             Tesseract.recognize(
                 canvas,
                 'por', // Idioma português
