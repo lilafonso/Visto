@@ -31,7 +31,8 @@
     
     <textarea id="textoAnalisado" placeholder="Informações processadas." name="textoAnalisado" rows="5"></textarea>
 
-    
+    <button id='pegarFotos' onclick="pegaFotos()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Pegar Fotos</button>
+
 
     <script>
         // Carregar dados padrão do arquivo pref.csv
@@ -441,7 +442,7 @@ Equipe:`;
                 // Procura um nome antes da posição do delegado
                 const textoAntesDoMatch = texto.substring(0, matchDelegado);
                 const linhas = textoAntesDoMatch.split('\n');
-                const ultimaLinha = linhas[linhas.length - 2].trim();
+                const ultimaLinha = linhas[linhas.length - 1].trim();
                 delegado = ultimaLinha;
             }
             // Procurar Delegacia
@@ -470,6 +471,60 @@ Delegacia:${delegacia}
 Delegado:${delegado}`;
 
             textoAnalisado.value = resultado;
+        }
+        async function pegaFotos() {
+            try {
+                // Solicitar permissão para acessar arquivos
+                const diretorioHandle = await window.showDirectoryPicker({
+                    mode: 'read'
+                });
+
+                // Array para armazenar as fotos encontradas
+                const fotos = [];
+
+                // Procurar arquivos de imagem no diretório
+                for await (const entry of diretorioHandle.values()) {
+                    if (entry.kind === 'file' && entry.name.match(/\.(jpg|jpeg|png|gif)$/i)) {
+                        const arquivo = await entry.getFile();
+                        const dataModificacao = arquivo.lastModified;
+                        
+                        // Adicionar ao array com data de modificação
+                        fotos.push({
+                            arquivo: arquivo,
+                            data: dataModificacao
+                        });
+                    }
+                }
+                // Filtrar apenas fotos dos últimos 10 minutos
+                const dezMinutosAtras = Date.now() - (10 * 60 * 1000); // 10 minutos em milissegundos
+                const fotosRecentes = fotos.filter(foto => foto.data >= dezMinutosAtras);
+                
+                // Substituir array original pelo filtrado
+                fotos.length = 0;
+                fotos.push(...fotosRecentes);
+
+                // Ordenar fotos por data de modificação (mais recentes primeiro)
+                fotos.sort((a, b) => b.data - a.data);
+
+                // Limpar fotos anteriores
+                const fotosAnteriores = document.querySelectorAll('.foto-importada');
+                fotosAnteriores.forEach(foto => foto.remove());
+
+                // Criar elementos de imagem para as fotos encontradas
+                for (const foto of fotos) {
+                    const url = URL.createObjectURL(foto.arquivo);
+                    const img = document.createElement('img');
+                    img.src = url;
+                    img.className = 'foto-importada';
+                    img.style.maxWidth = '100%';
+                    img.style.marginTop = '10px';
+                    document.body.appendChild(img);
+                }
+
+            } catch (erro) {
+                console.error('Erro ao acessar diretório:', erro);
+                alert('Não foi possível acessar o diretório de fotos.');
+            }
         }
     </script>
 
