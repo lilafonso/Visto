@@ -12,22 +12,24 @@
     <h1>Laudo de Vistoria</h1>
     <p>Captura uma imagem, abra uma foto ou cole o texto extraído OCR:</p>
 
-    <!-- <button onclick="trocarCamera()" id="btnTrocarCamera">Trocar Câmera</button> -->
-    
-    <button id='captFoto' onclick="capturarFoto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 49%;">Capturar Foto</button>
-    <button id='abrirFoto' onclick="abrirFoto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 49%;">Abrir Foto</button>
+    <button id='captFoto' onclick="capturarFoto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 45px; width: 49%;">Capturar Foto</button>
+    <button id='abrirFoto' onclick="abrirFoto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 45px; width: 49%;">Abrir Foto</button>
+
+    </br>
+    <button id='captFoto' onclick="capturarFoto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 45px; width: 49%;">Capturar Foto</button>
+    <button id='abrirFoto' onclick="abrirFoto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 45px; width: 49%;">Abrir Foto</button>
 
     <video id="camera" autoplay></video>
     <canvas id="foto" style="display:none;"></canvas>
     
     <label for="textoOCR">Texto a ser processado:</label>
 
-    <textarea id="textoOCR" name="textoOCR" rows="5">Cole aqui ou aguarde o processamento.</textarea>
+    <textarea id="textoOCR" name="textoOCR" placeholder="Cole aqui ou aguarde o processamento." rows="5"></textarea>
    
         
     <button id='analisarTexto' onclick="analisarTexto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Analisar Texto</button>
     
-    <textarea id="textoAnalisado" name="textoAnalisado" rows="5">Informoções processadas</textarea>
+    <textarea id="textoAnalisado" placeholder="Informações processadas." name="textoAnalisado" rows="5"></textarea>
 
     <script>
         let video = document.getElementById('camera');
@@ -385,15 +387,14 @@
             const regexDelegado = /(?:Dr\.|Dra\.|Delegado|Delegada)[.\s]+([^,\n]+)/i;
 
             const matchDelegado = texto.search(regexDelegado);
-            if (matchDelegado) {
+                        
+            if (matchDelegado!=-1) {
 
-                //delegado = matchDelegado[1].trim();
                 // Procura um nome antes da posição do delegado
                 const textoAntesDoMatch = texto.substring(0, matchDelegado);
                 const linhas = textoAntesDoMatch.split('\n');
                 const ultimaLinha = linhas[linhas.length - 2].trim();
                 delegado = ultimaLinha;
-                console.log(linhas);
             }
             // Montar texto de resultado
 
