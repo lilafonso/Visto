@@ -10,12 +10,13 @@
 </head>
 <body>
     <h1>Laudo de Vistoria</h1>
-    <p>Captura uma imagem, abra uma foto ou cole o texto extraído OCR:</p>
+    <p>Use as preferências default, carregue o arquivo com as suas preferências ou edite e salve suas preferências:</p>
+    <button id='importarPreferências' onclick="importarPref()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 45px; width: 49%;">Importar Preferências</button>
+    <button id='salvarPreferências' onclick="salvarPref()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 45px; width: 49%;">Salvar Preferências</button>
 
-    <button id='captFoto' onclick="capturarFoto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 45px; width: 49%;">Capturar Foto</button>
-    <button id='abrirFoto' onclick="abrirFoto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 45px; width: 49%;">Abrir Foto</button>
-
-    </br>
+    <textarea id="dadosBase" name="dadosBase" rows="5"></textarea>
+    
+    <p>Capture uma imagem, abra uma foto ou cole o texto extraído OCR:</p>
     <button id='captFoto' onclick="capturarFoto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 45px; width: 49%;">Capturar Foto</button>
     <button id='abrirFoto' onclick="abrirFoto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 45px; width: 49%;">Abrir Foto</button>
 
@@ -25,13 +26,36 @@
     <label for="textoOCR">Texto a ser processado:</label>
 
     <textarea id="textoOCR" name="textoOCR" placeholder="Cole aqui ou aguarde o processamento." rows="5"></textarea>
-   
-        
+     
     <button id='analisarTexto' onclick="analisarTexto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Analisar Texto</button>
     
     <textarea id="textoAnalisado" placeholder="Informações processadas." name="textoAnalisado" rows="5"></textarea>
 
     <script>
+        function importarPref() {
+            fetch('pref.csv')
+                .then(response => response.text())
+                .then(data => {
+                    const dadosBase = document.getElementById('dadosBase');
+                    dadosBase.value = data;
+                })
+                .catch(erro => {
+                    console.error('Erro ao carregar arquivo:', erro);
+                    alert('Erro ao carregar as preferências');
+                });
+        }
+
+        function salvarPref() {
+            const dadosBase = document.getElementById('dadosBase').value;
+            const blob = new Blob([dadosBase], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'pref.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
         let video = document.getElementById('camera');
         let canvas = document.getElementById('foto');
         
