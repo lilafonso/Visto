@@ -443,6 +443,7 @@ Equipe:`;
                 const textoAntesDoMatch = texto.substring(0, matchDelegado);
                 const linhas = textoAntesDoMatch.split('\n');
                 const ultimaLinha = linhas[linhas.length - 1].trim();
+                if (ultimaLinha=="") ultimaLinha = linhas[linhas.length - 2].trim();
                 delegado = ultimaLinha;
             }
             // Procurar Delegacia
@@ -526,6 +527,7 @@ Delegado:${delegado}`;
                 alert('Não foi possível acessar o diretório de fotos.');
             }
         }
+        
     </script>
 
 </body>
