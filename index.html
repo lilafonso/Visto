@@ -180,6 +180,9 @@
     <button id='pegarFotos' onclick="pegaFotos()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Pegar Fotos</button>
     <button onclick="gerarDocx()" style="margin: 20px 0; padding: 10px 20px;">Gerar Documento Word</button>
     <script>
+        // Array para armazenar os dadosGerais
+        let dadosGerais = [];
+
         function proximoAvariados() {
             document.getElementById('popupTeste').style.display = 'none';
             document.getElementById('popupAvariados').style.display = 'block';
@@ -533,7 +536,7 @@ Equipe:`;
                 // Remove eventuais ':' da string
                 naturezaDoExame = naturezaDoExame.replace(/:/g, '');
             }
-            
+            dadosGerais.push(naturezaDoExame);
             // Procurar Placa
             const regexPlaca = /placa:?\s*([A-Z0-9]{7})/i;
             const matchPlaca = texto.match(regexPlaca);
