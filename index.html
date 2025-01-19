@@ -31,10 +31,168 @@
     
     <textarea id="textoAnalisado" placeholder="Informações processadas." name="textoAnalisado" rows="5"></textarea>
 
+    <button id='novoDano' onclick="abrirPopupDano()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Novo Dano</button>
+
+    
+    <div id="popupTipoDano" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 10px; border: 1px solid black; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+        <h3>Tipo de Dano</h3>
+
+        <div>
+            <input type="checkbox" id="amolgamento"> <label for="amolgamento">Amolgamento(s)</label><br>
+            <input type="checkbox" id="atritamento"> <label for="atritamento">Atritamento(s)</label><br>
+            <input type="checkbox" id="fratura"> <label for="fratura">Fratura(s)</label><br>
+        </div>
+        <button onclick="proximoOrientacao()" style="margin-top: 10px;">Próximo</button>
+    </div>
+
+    <div id="popupOrientacao" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid black; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+        <h3>Orientação</h3>
+        <div>
+            <input type="checkbox" id="frenteTras"> <label for="frenteTras">de frente para trás</label><br>
+            <input type="checkbox" id="trasFrente"> <label for="trasFrente">de trás para frente</label><br>
+            <input type="checkbox" id="dirEsq"> <label for="dirEsq">da direita para a esquerda</label><br>
+            <input type="checkbox" id="esqDir"> <label for="esqDir">da esquerda para a direita</label><br>
+            <input type="checkbox" id="cimaBaixo"> <label for="cimaBaixo">de cima para baixo</label><br>
+            <input type="checkbox" id="baixoCima"> <label for="baixoCima">de baixo para cima</label><br>
+        </div>
+        <button onclick="proximoSituado()" style="margin-top: 10px;">Próximo</button>
+    </div>
+
+    <div id="popupSituado" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid black; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+        <h3>Situado</h3>
+        <div>
+            <input type="checkbox" id="pa"> <label for="pa">na porção anterior</label><br>
+            <input type="checkbox" id="pad"> <label for="pad">na porção anterior direita</label><br>
+            <input type="checkbox" id="pae"> <label for="pae">na porção anterior esquerda</label><br>
+            <input type="checkbox" id="pp"> <label for="pp">na porção posterior</label><br>
+            <input type="checkbox" id="ppd"> <label for="ppd">na porção posterior direita</label><br>
+            <input type="checkbox" id="ppe"> <label for="ppd">na porção posterior esquerda</label><br>
+            <input type="checkbox" id="fe"> <label for="fe">no flanco esquerdo</label><br>
+            <input type="checkbox" id="fea"> <label for="fea">no flanco esquerdo, terço anterior</label><br>
+            <input type="checkbox" id="fep"> <label for="fed">no flanco esquerdo, terço posterior</label><br>
+            <input type="checkbox" id="fd"> <label for="fd">no flanco direito</label><br>
+            <input type="checkbox" id="fda"> <label for="fda">no flanco direito, terço anterior</label><br>
+            <input type="checkbox" id="fdp"> <label for="fdp">no flanco direito, terço posterior</label><br>
+            <input type="checkbox" id="fdp"> <label for="fdp">na porção inferior</label><br>
+            <input type="checkbox" id="fdp"> <label for="fdp">na porção superior</label><br>
+        </div>
+        <button onclick="finalizarDano()" style="margin-top: 10px;">FIM</button>
+    </div>
+
+    <textarea id="danosVeic" placeholder="Danos no veículo" name="danosVeic" rows="5"></textarea>
+
+    <button id='novoTeste' onclick="abrirPopupTeste()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Novo Teste</button>
+
+    <div id="popupTeste" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 10px; border: 1px solid black; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+        <h3>Marcar os defeitos</h3>
+        <div>
+            <input type="checkbox" id="chave"> <label for="chave">farol</label><br>
+            <input type="checkbox" id="partida"> <label for="partida">seta</label><br>
+            <input type="checkbox" id="acelerador"> <label for="acelerador">buzina</label><br>
+            <input type="checkbox" id="freio"> <label for="freio">freio</label><br>
+            <input type="checkbox" id="embreagem"> <label for="embreagem">pneumáticos</label><br>
+            <input type="checkbox" id="cambio"> <label for="cambio">cintos</label><br>
+            <input type="checkbox" id="direcao"> <label for="direcao">Direção</label><br>
+            <input type="checkbox" id="luzes"> <label for="luzes">airbags</label><br>
+            <input type="checkbox" id="buzina"> <label for="buzina">buzina</label><br>
+            
+        </div>
+        <button onclick="finalizarTeste()" style="margin-top: 10px;">Finalizar</button>
+    </div>
+
+    <textarea id="testesVeic" placeholder="Testes veiculares" name="testesVeic" rows="5"></textarea>
+
+
+    
     <button id='pegarFotos' onclick="pegaFotos()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Pegar Fotos</button>
 
-
     <script>
+        function abrirPopupTeste() {
+            document.getElementById('popupTeste').style.display = 'block';
+        }
+
+        function finalizarTeste() {
+            document.getElementById('popupTeste').style.display = 'none';
+            
+            // Pegar todas as checkboxes marcadas
+            const testes = document.getElementById('popupTeste')
+                                 .querySelectorAll('input[type="checkbox"]:checked');
+            
+            let texto = '';
+            
+            // Montar o texto com os testes selecionados
+            for (let i = 0; i < testes.length; i++) {
+                let comma = ', ';
+                if((testes.length == 2) && i == 0) comma = ' e ';
+                if((testes.length == 3) && i == 1) comma = ' e ';
+                texto += testes[i].nextElementSibling.textContent + comma;
+            }
+            
+            if(texto.length > 0) {
+                texto = texto.slice(0, -2) + ' em funcionamento.';
+                document.getElementById('testesVeic').value += texto + '\n';
+            }
+        }
+
+        function abrirPopupDano() {
+            document.getElementById('popupTipoDano').style.display = 'block';
+        }
+
+        function proximoOrientacao() {
+            document.getElementById('popupTipoDano').style.display = 'none';
+            document.getElementById('popupOrientacao').style.display = 'block';
+        }
+
+        function proximoSituado() {
+            document.getElementById('popupOrientacao').style.display = 'none';
+            document.getElementById('popupSituado').style.display = 'block';
+        }
+
+        function finalizarDano() {
+            document.getElementById('popupSituado').style.display = 'none';
+            // Pegar todas as checkboxes marcadas
+            let texto = '';
+            
+            // Tipo de dano
+            const tipoDano = document.getElementById('popupTipoDano')
+                                   .querySelectorAll('input[type="checkbox"]:checked');
+            
+            // Orientação
+            const orientacao = document.getElementById('popupOrientacao')
+                                     .querySelectorAll('input[type="checkbox"]:checked');
+            
+            // Situado
+            const situado = document.getElementById('popupSituado')
+                                  .querySelectorAll('input[type="checkbox"]:checked');
+
+            // Montar o texto com as opções selecionadas
+            for (let i = 0; i < tipoDano.length; i++){
+                let comma =', ';
+                if((tipoDano.length==2)&&i==0) comma = ' e ';
+                //if((tipoDano.length==3)&&i==0) comma = ', ';
+                if((tipoDano.length==3)&&i==1) comma = ' e ';
+                texto += tipoDano[i].nextElementSibling.textContent + comma;
+            }
+            texto += 'orientado(s) ';
+
+            orientacao.forEach(checkbox => {
+                texto += checkbox.nextElementSibling.textContent + ', ';
+            });
+            texto += 'situado(s) '
+            situado.forEach(checkbox => {
+                texto += checkbox.nextElementSibling.textContent + ', ';
+            });
+            texto = texto.slice(0, -2)+ '.';
+            
+            // Desmarcar todas as checkboxes
+            tipoDano.forEach(checkbox => checkbox.checked = false);
+            orientacao.forEach(checkbox => checkbox.checked = false); 
+            situado.forEach(checkbox => checkbox.checked = false);
+            // Adicionar ao textarea
+
+            document.getElementById('danosVeic').value = document.getElementById('danosVeic').value + texto + '\n';
+        }
+
         // Carregar dados padrão do arquivo pref.csv
         window.onload = function() {
             const dadosBase = document.getElementById('dadosBase');
@@ -476,17 +634,22 @@ Delegado:${delegado}`;
         async function pegaFotos() {
             try {
                 // Solicitar permissão para acessar arquivos
-                const diretorioHandle = await window.showDirectoryPicker({
-                    mode: 'read'
-                });
+                // Criar input de arquivo para selecionar múltiplas fotos
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.multiple = true;
+                input.accept = 'image/*';
+                
+                input.onchange = async function(e) {
+                    // Limpar fotos anteriores
+                    const fotosAnteriores = document.querySelectorAll('.foto-importada');
+                    fotosAnteriores.forEach(foto => foto.remove());
 
-                // Array para armazenar as fotos encontradas
-                const fotos = [];
+                    // Array para armazenar as fotos selecionadas
+                    const fotos = [];
 
-                // Procurar arquivos de imagem no diretório
-                for await (const entry of diretorioHandle.values()) {
-                    if (entry.kind === 'file' && entry.name.match(/\.(jpg|jpeg|png|gif)$/i)) {
-                        const arquivo = await entry.getFile();
+                    // Processar cada arquivo selecionado
+                    for (const arquivo of e.target.files) {
                         const dataModificacao = arquivo.lastModified;
                         
                         // Adicionar ao array com data de modificação
@@ -495,32 +658,28 @@ Delegado:${delegado}`;
                             data: dataModificacao
                         });
                     }
-                }
-                // Filtrar apenas fotos dos últimos 10 minutos
-                const dezMinutosAtras = Date.now() - (10 * 60 * 1000); // 10 minutos em milissegundos
-                const fotosRecentes = fotos.filter(foto => foto.data >= dezMinutosAtras);
-                
-                // Substituir array original pelo filtrado
-                fotos.length = 0;
-                fotos.push(...fotosRecentes);
 
-                // Ordenar fotos por data de modificação (mais recentes primeiro)
-                fotos.sort((a, b) => b.data - a.data);
+                    // Filtrar apenas fotos dos últimos 10 minutos
+                    // const dezMinutosAtras = Date.now() - (10 * 60 * 1000);
+                    // const fotosRecentes = fotos.filter(foto => foto.data >= dezMinutosAtras);
 
-                // Limpar fotos anteriores
-                const fotosAnteriores = document.querySelectorAll('.foto-importada');
-                fotosAnteriores.forEach(foto => foto.remove());
+                    // Ordenar fotos por data de modificação (mais recentes primeiro)
+                    fotos.sort((a, b) => b.data - a.data);
 
-                // Criar elementos de imagem para as fotos encontradas
-                for (const foto of fotos) {
-                    const url = URL.createObjectURL(foto.arquivo);
-                    const img = document.createElement('img');
-                    img.src = url;
-                    img.className = 'foto-importada';
-                    img.style.maxWidth = '100%';
-                    img.style.marginTop = '10px';
-                    document.body.appendChild(img);
-                }
+                    // Criar elementos de imagem para as fotos selecionadas
+                    for (const foto of fotos) {
+                        const url = URL.createObjectURL(foto.arquivo);
+                        const img = document.createElement('img');
+                        img.src = url;
+                        img.className = 'foto-importada';
+                        img.style.maxWidth = '100%';
+                        img.style.marginTop = '10px';
+                        document.body.appendChild(img);
+                    }
+                };
+
+                // Acionar o seletor de arquivos
+                input.click();
 
             } catch (erro) {
                 console.error('Erro ao acessar diretório:', erro);
@@ -528,6 +687,9 @@ Delegado:${delegado}`;
             }
         }
         
+    
+    
+
     </script>
 
 </body>

@@ -16,6 +16,7 @@ label {
   margin-bottom: 10px;
   font-size: 0.8rem;
   letter-spacing: 1px;
+  display: inline-block;
 }
 
 body {
