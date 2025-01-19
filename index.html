@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="style.css">
     <title>Laudos de Vistoria</title>
     <script src='https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js'></script>
+    <script src="https://unpkg.com/docx@7.1.0/build/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
 </head>
 <body>
@@ -84,18 +86,89 @@
     <button id='novoTeste' onclick="abrirPopupTeste()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Novo Teste</button>
 
     <div id="popupTeste" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 10px; border: 1px solid black; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
-        <h3>Marcar os defeitos</h3>
+        <h3>Marcar não funcionais</h3>
         <div>
-            <input type="checkbox" id="chave"> <label for="chave">farol</label><br>
-            <input type="checkbox" id="partida"> <label for="partida">seta</label><br>
-            <input type="checkbox" id="acelerador"> <label for="acelerador">buzina</label><br>
-            <input type="checkbox" id="freio"> <label for="freio">freio</label><br>
-            <input type="checkbox" id="embreagem"> <label for="embreagem">pneumáticos</label><br>
-            <input type="checkbox" id="cambio"> <label for="cambio">cintos</label><br>
-            <input type="checkbox" id="direcao"> <label for="direcao">Direção</label><br>
-            <input type="checkbox" id="luzes"> <label for="luzes">airbags</label><br>
+            <input type="checkbox" id="lanternaAnteriorDireita"> <label for="lanternaAnteriorDireita">lanterna anterior direita</label><br>
+            <input type="checkbox" id="lanternaAnteriorEsquerda"> <label for="lanternaAnteriorEsquerda">lanterna anterior esquerda</label><br>
+            
+            <input type="checkbox" id="farolDireito"> <label for="farolDireito">farol direito</label><br>
+            <input type="checkbox" id="farolEsquerdo"> <label for="farolEsquerdo">farol esquerdo</label><br>
+
+            <input type="checkbox" id="farolAltoDireito"> <label for="farolAltoDireito">farol alto direito</label><br>
+            <input type="checkbox" id="farolAltoEsquerdo"> <label for="farolAltoEsquerdo">farol alto esquerdo</label><br>
+            
+            <input type="checkbox" id="setaAnteriorDireita"> <label for="setaAnteriorDireita">seta anterior direita</label><br>
+            <input type="checkbox" id="setaAnteriorEsquerda"> <label for="setaAnteriorEsquerda">seta anterior esquerda</label><br>
+
             <input type="checkbox" id="buzina"> <label for="buzina">buzina</label><br>
             
+            <input type="checkbox" id="luzRe"> <label for="luzRe">luz de ré</label><br>
+            
+            <input type="checkbox" id="lanternaPosteriorDireita"> <label for="lanternaPosteriorDireita">lanterna posterior direita</label><br>
+            <input type="checkbox" id="lanternaPosteriorEsquerda"> <label for="lanternaPosteriorEsquerda">lanterna posterior esquerda</label><br>
+
+            <input type="checkbox" id="setaPosteriorDireita"> <label for="setaPosteriorDireita">seta posterior direita</label><br>
+            <input type="checkbox" id="setaPosteriorEsquerda"> <label for="setaPosteriorEsquerda">seta posterior esquerda</label><br>
+            
+            <input type="checkbox" id="freio"> <label for="freio">freio</label><br>
+
+            <input type="checkbox" id="pneumaticoAnteriorEsquerdo"> <label for="pneumaticoAnteriorEsquerdo">pneumáticos anterior esquerdo</label><br>
+            <input type="checkbox" id="pneumaticoAnteriorDireito"> <label for="pneumaticoAnteriorDireito">pneumáticos anterior direito</label><br>
+            <input type="checkbox" id="pneumaticoPosteriorDireito"> <label for="pneumaticoPosteriorDireito">pneumáticos posterior direito</label><br>
+            <input type="checkbox" id="pneumaticoPosteriorEsquerdo"> <label for="pneumaticoPosteriorEsquerdo">pneumáticos posterior esquerdo</label><br>
+
+            <input type="checkbox" id="direcao"> <label for="direcao">direção</label><br>
+            <input type="checkbox" id="airbags"> <label for="airbags">airbags</label><br>
+
+            <input type="checkbox" id="cintoMotorista"> <label for="cintoMotorista">cinto do motorista</label><br>
+            <input type="checkbox" id="cintoPassageiro"> <label for="cintoPassageiro">cinto do passageiro</label><br>
+            <input type="checkbox" id="cintoTraseiroEsquerdo"> <label for="cintoTraseiroEsquerdo">cinto traseiro esquerdo</label><br>
+            <input type="checkbox" id="cintoTraseiroCentral"> <label for="cintoTraseiroCentral">cinto traseiro central</label><br>
+            <input type="checkbox" id="cintoTraseiroDireito"> <label for="cintoTraseiroDireito">cinto traseiro direito</label><br>
+        </div>
+        <button onclick="proximoAvariados()" style="margin-top: 10px;">Próximo</button>
+    </div>
+
+    <div id="popupAvariados" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 10px; border: 1px solid black; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+        <h3>Avariados no acidente</h3>
+        <div>
+            <input type="checkbox" id="lanternaAnteriorDireitaAv"> <label for="lanternaAnteriorDireitaAv">lanterna anterior direita</label><br>
+            <input type="checkbox" id="lanternaAnteriorEsquerdaAv"> <label for="lanternaAnteriorEsquerdaAv">lanterna anterior esquerda</label><br>
+            
+            <input type="checkbox" id="farolDireitoAv"> <label for="farolDireitoAv">farol direito</label><br>
+            <input type="checkbox" id="farolEsquerdoAv"> <label for="farolEsquerdoAv">farol esquerdo</label><br>
+
+            <input type="checkbox" id="farolAltoDireitoAv"> <label for="farolAltoDireitoAv">farol alto direito</label><br>
+            <input type="checkbox" id="farolAltoEsquerdoAv"> <label for="farolAltoEsquerdoAv">farol alto esquerdo</label><br>
+            
+            <input type="checkbox" id="setaAnteriorDireitaAv"> <label for="setaAnteriorDireitaAv">seta anterior direita</label><br>
+            <input type="checkbox" id="setaAnteriorEsquerdaAv"> <label for="setaAnteriorEsquerdaAv">seta anterior esquerda</label><br>
+
+            <input type="checkbox" id="buzinaAv"> <label for="buzinaAv">buzina</label><br>
+            
+            <input type="checkbox" id="luzReAv"> <label for="luzReAv">luz de ré</label><br>
+            
+            <input type="checkbox" id="lanternaPosteriorDireitaAv"> <label for="lanternaPosteriorDireitaAv">lanterna posterior direita</label><br>
+            <input type="checkbox" id="lanternaPosteriorEsquerdaAv"> <label for="lanternaPosteriorEsquerdaAv">lanterna posterior esquerda</label><br>
+
+            <input type="checkbox" id="setaPosteriorDireitaAv"> <label for="setaPosteriorDireitaAv">seta posterior direita</label><br>
+            <input type="checkbox" id="setaPosteriorEsquerdaAv"> <label for="setaPosteriorEsquerdaAv">seta posterior esquerda</label><br>
+            
+            <input type="checkbox" id="freioAv"> <label for="freioAv">freio</label><br>
+
+            <input type="checkbox" id="pneumaticoAnteriorEsquerdoAv"> <label for="pneumaticoAnteriorEsquerdoAv">pneumáticos anterior esquerdo</label><br>
+            <input type="checkbox" id="pneumaticoAnteriorDireitoAv"> <label for="pneumaticoAnteriorDireitoAv">pneumáticos anterior direito</label><br>
+            <input type="checkbox" id="pneumaticoPosteriorDireitoAv"> <label for="pneumaticoPosteriorDireitoAv">pneumáticos posterior direito</label><br>
+            <input type="checkbox" id="pneumaticoPosteriorEsquerdoAv"> <label for="pneumaticoPosteriorEsquerdoAv">pneumáticos posterior esquerdo</label><br>
+
+            <input type="checkbox" id="direcaoAv"> <label for="direcaoAv">direção</label><br>
+            <input type="checkbox" id="airbagsAv"> <label for="airbagsAv">airbags</label><br>
+
+            <input type="checkbox" id="cintoMotoristaAv"> <label for="cintoMotoristaAv">cinto do motorista</label><br>
+            <input type="checkbox" id="cintoPassageiroAv"> <label for="cintoPassageiroAv">cinto do passageiro</label><br>
+            <input type="checkbox" id="cintoTraseiroEsquerdoAv"> <label for="cintoTraseiroEsquerdoAv">cinto traseiro esquerdo</label><br>
+            <input type="checkbox" id="cintoTraseiroCentralAv"> <label for="cintoTraseiroCentralAv">cinto traseiro central</label><br>
+            <input type="checkbox" id="cintoTraseiroDireitoAv"> <label for="cintoTraseiroDireitoAv">cinto traseiro direito</label><br>
         </div>
         <button onclick="finalizarTeste()" style="margin-top: 10px;">Finalizar</button>
     </div>
@@ -105,33 +178,27 @@
 
     
     <button id='pegarFotos' onclick="pegaFotos()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Pegar Fotos</button>
-
+    <button onclick="gerarDocx()" style="margin: 20px 0; padding: 10px 20px;">Gerar Documento Word</button>
     <script>
+        function proximoAvariados() {
+            document.getElementById('popupTeste').style.display = 'none';
+            document.getElementById('popupAvariados').style.display = 'block';
+        }
+
         function abrirPopupTeste() {
             document.getElementById('popupTeste').style.display = 'block';
         }
 
         function finalizarTeste() {
-            document.getElementById('popupTeste').style.display = 'none';
+            document.getElementById('popupAvariados').style.display = 'none';
+            // Verifica se algum checkbox está marcado em popupTeste e popupAvariados
+            const checkboxesTeste = document.getElementById('popupTeste').querySelectorAll('input[type="checkbox"]:checked');
+            const checkboxesAvariados = document.getElementById('popupAvariados').querySelectorAll('input[type="checkbox"]:checked');
             
-            // Pegar todas as checkboxes marcadas
-            const testes = document.getElementById('popupTeste')
-                                 .querySelectorAll('input[type="checkbox"]:checked');
-            
-            let texto = '';
-            
-            // Montar o texto com os testes selecionados
-            for (let i = 0; i < testes.length; i++) {
-                let comma = ', ';
-                if((testes.length == 2) && i == 0) comma = ' e ';
-                if((testes.length == 3) && i == 1) comma = ' e ';
-                texto += testes[i].nextElementSibling.textContent + comma;
+            if (checkboxesTeste.length === 0 && checkboxesAvariados.length === 0) {
+                document.getElementById('testesVeic').value = 'Os seus sistemas de segurança para o tráfego (freio, direção e elétrico) se encontravam articulados e atuantes, quando dos exames.';
             }
-            
-            if(texto.length > 0) {
-                texto = texto.slice(0, -2) + ' em funcionamento.';
-                document.getElementById('testesVeic').value += texto + '\n';
-            }
+
         }
 
         function abrirPopupDano() {
@@ -688,6 +755,73 @@ Delegado:${delegado}`;
         }
         
     
+
+
+        async function gerarDocx() {
+            try {
+                // Criar novo documento
+                const doc = new docx.Document();
+
+                // Obter texto do textarea
+                const texto = document.getElementById('resultado').value;
+
+                // Adicionar texto ao documento
+                doc.addSection({
+                    properties: {},
+                    children: [
+                        new docx.Paragraph({
+                            children: [
+                                new docx.TextRun(texto)
+                            ],
+                        })
+                    ]
+                });
+
+                // Obter todas as imagens
+                const imagens = document.querySelectorAll('.foto-importada');
+                
+                // Adicionar cada imagem ao documento
+                for (const img of imagens) {
+                    const response = await fetch(img.src);
+                    const blob = await response.blob();
+                    const arrayBuffer = await blob.arrayBuffer();
+
+                    const imagemDocx = docx.Media.addImage(doc, arrayBuffer);
+                    
+                    doc.addSection({
+                        children: [
+                            new docx.Paragraph({
+                                children: [
+                                    new docx.ImageRun({
+                                        data: arrayBuffer,
+                                        transformation: {
+                                            width: 500,
+                                            height: 300
+                                        }
+                                    })
+                                ]
+                            })
+                        ]
+                    });
+                }
+
+                // Gerar e baixar o arquivo
+                docx.Packer.toBlob(doc).then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'laudo.docx';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                });
+
+            } catch (erro) {
+                console.error('Erro ao gerar documento:', erro);
+                alert('Erro ao gerar documento Word');
+            }
+        }
+   
     
 
     </script>
