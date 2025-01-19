@@ -762,8 +762,60 @@ Delegado:${delegado}`;
                 // Criar novo documento
                 const doc = new docx.Document({
                     sections: [{
-                        properties: {},
+                        properties: {
+                            page: {
+                                margin: {
+                                    top: 2000,
+                                },
+                            },
+                        },
+                        headers: {
+                            default: new docx.Header({
+                                children: [
+                                    new docx.Paragraph({
+                                        font:'Arial',
+                                        children: [
+                                            // new docx.ImageRun({
+                                            //     data: buffer,
+                                            //     transformation: {
+                                            //         width: 600,
+                                            //         height: 75,
+                                            //     },
+                                            // }),
+                                            new docx.TextRun({
+                                                font:'Arial',
+                                                alignment: docx.AlignmentType.RIGHT,
+                                                text: 'BO: ' + document.getElementById('textoAnalisado').
+                                                value.match(/(?:BO|Boletim)[:\s]+([^\n]+)/i)[1]
+                                            })                                            
+                                        ],
+                                    }),
+                                ],
+                            }),
+                        },
+                        footers: {
+                            default: new docx.Footer({
+                                children: [
+                                    new docx.Paragraph({
+                                        alignment: docx.AlignmentType.RIGHT,
+                                        font:'Arial',
+                                        children: [
+                                            
+                                            new docx.TextRun("Superintendência da Polícia Técnico-Científica. Proibida divulgação ou cópia sem autorização. Página "),
+                                            new docx.TextRun({
+                                                children: [docx.PageNumber.CURRENT]
+                                            }),
+                                            new docx.TextRun(" de "),
+                                            new docx.TextRun({
+                                                children: [docx.PageNumber.TOTAL_PAGES]
+                                            }),
+                                        ],
+                                    }),
+                                ],
+                            }),
+                        },
                         children: [
+                            
                             new docx.Paragraph({
                                 children: [
                                     new docx.TextRun({
