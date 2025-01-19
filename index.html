@@ -760,61 +760,69 @@ Delegado:${delegado}`;
         async function gerarDocx() {
             try {
                 // Criar novo documento
-                const doc = new docx.Document();
-
-                // Obter texto do textarea
-                const texto = document.getElementById('resultado').value;
-
-                // Adicionar texto ao documento
-                doc.addSection({
-                    properties: {},
-                    children: [
-                        new docx.Paragraph({
-                            children: [
-                                new docx.TextRun(texto)
-                            ],
-                        })
-                    ]
-                });
-
-                // Obter todas as imagens
-                const imagens = document.querySelectorAll('.foto-importada');
-                
-                // Adicionar cada imagem ao documento
-                for (const img of imagens) {
-                    const response = await fetch(img.src);
-                    const blob = await response.blob();
-                    const arrayBuffer = await blob.arrayBuffer();
-
-                    const imagemDocx = docx.Media.addImage(doc, arrayBuffer);
-                    
-                    doc.addSection({
+                const doc = new docx.Document({
+                    sections: [{
+                        properties: {},
                         children: [
                             new docx.Paragraph({
                                 children: [
-                                    new docx.ImageRun({
-                                        data: arrayBuffer,
-                                        transformation: {
-                                            width: 500,
-                                            height: 300
-                                        }
+                                    new docx.TextRun({
+                                        text: document.getElementById('textoAnalisado').value
+                                    })
+                                ]
+                            }),
+                            new docx.Paragraph({
+                                children: [
+                                    new docx.TextRun({
+                                        text: document.getElementById('danosVeic').value
+                                    })
+                                ]
+                            }),
+                            new docx.Paragraph({
+                                children: [
+                                    new docx.TextRun({
+                                        text: document.getElementById('testesVeic').value
                                     })
                                 ]
                             })
                         ]
-                    });
+                    }]
+                });
+                // Adicionar fotos ao documento
+                const fotos = document.getElementsByClassName('foto-importada');
+                if (fotos.length > 0) {
+                    for (let foto of fotos) {
+                        // Converter imagem para base64
+                        const canvas = document.createElement('canvas');
+                        canvas.width = foto.width;
+                        canvas.height = foto.height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(foto, 0, 0);
+                        const base64 = canvas.toDataURL('image/jpeg').split(',')[1];
+
+                        // Adicionar imagem ao documento
+                        doc.addSection({
+                            children: [
+                                new docx.Paragraph({
+                                    children: [
+                                        new docx.ImageRun({
+                                            data: Uint8Array.from(atob(base64), c => c.charCodeAt(0)),
+                                            transformation: {
+                                                width: 500,
+                                                height: 400
+                                            }
+                                        })
+                                    ],
+                                    alignment: docx.AlignmentType.CENTER
+                                })
+                            ]
+                        });
+                    }
                 }
 
                 // Gerar e baixar o arquivo
-                docx.Packer.toBlob(doc).then(blob => {
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'laudo.docx';
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                });
+                const blob = await docx.Packer.toBlob(doc);
+                saveAs(blob, "laudo.docx");
 
             } catch (erro) {
                 console.error('Erro ao gerar documento:', erro);
