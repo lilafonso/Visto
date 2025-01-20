@@ -11,6 +11,7 @@
 
 </head>
 <body>
+    
     <h1>Laudo de Vistoria</h1>
     <p>Use as preferências default, carregue o arquivo com as suas preferências ou edite e salve suas preferências:</p>
     
@@ -90,11 +91,11 @@
 
     <div style="text-align:center; display: inline-flex; width: 100%; padding: 2px;">
 
-    <button id='novoTeste' onclick="abrirPopupTeste()" style="padding: 10px 20px; height: 70px; font-size: 1.2em; margin: 5px 0; width: 50%;">Exames no veículo</button>
+    <button id='novoTeste' onclick="abrirPopupTeste()" style="padding: 10px 20px; height: 70px; font-size: 1.2em; margin: 5px 0; width: 34%;">Exames no veículo</button>
 
-    <button id='veicOK' onclick="document.getElementById('testesVeic').value = 'Os seus sistemas de segurança para o tráfego (freio, direção e elétrico) se encontravam articulados e atuantes, quando dos exames. Pneumáticos em estado regular.'" style="padding: 10px 20px; font-size: 1.2em; height: 70px; margin: 5px 0; width: 25%;">Veículo OK</button>
+    <button id='veicOK' onclick="document.getElementById('testesVeic').value = 'Os seus sistemas de segurança para o tráfego (freio, direção e elétrico) se encontravam articulados e atuantes, quando dos exames. Pneumáticos em estado regular.'" style="padding: 10px 20px; font-size: 1.2em; height: 70px; margin: 5px 0; width: 33%;">Veículo OK</button>
 
-    <button id='veicDep' onclick="document.getElementById('testesVeic').value = 'Veículo em estado de desmontagem completa, prejudicando os exames de praxe.'"style="padding: 10px 20px; font-size: 1.2em; height: 70px; margin: 5px 0; width: 25%;">Veículo Depenado</button>
+    <button id='veicDep' onclick="document.getElementById('testesVeic').value = 'Veículo em estado de desmontagem completa, prejudicando os exames de praxe.'"style="padding: 10px 20px; font-size: 1.2em; height: 70px; margin: 5px 0; width: 33%;">Veículo Depenado</button>
     </div>
 
     <div id="popupTeste" class="popup" >
@@ -113,6 +114,36 @@
         <div>
             <input type="checkbox" id="lanternaAnteriorDireita"> <label for="lanternaAnteriorDireita">lanterna anterior direita</label><br>
             <input type="checkbox" id="lanternaAnteriorEsquerda"> <label for="lanternaAnteriorEsquerda">lanterna anterior esquerda</label><br>
+            
+            <input type="checkbox" id="farolDireito"> <label for="farolDireito">farol direito</label><br>
+            <input type="checkbox" id="farolEsquerdo"> <label for="farolEsquerdo">farol esquerdo</label><br>
+
+            <input type="checkbox" id="farolAltoDireito"> <label for="farolAltoDireito">farol alto direito</label><br>
+            <input type="checkbox" id="farolAltoEsquerdo"> <label for="farolAltoEsquerdo">farol alto esquerdo</label><br>
+            
+            <input type="checkbox" id="setaAnteriorDireita"> <label for="setaAnteriorDireita">seta anterior direita</label><br>
+            <input type="checkbox" id="setaAnteriorEsquerda"> <label for="setaAnteriorEsquerda">seta anterior esquerda</label><br>
+
+            <input type="checkbox" id="buzina"> <label for="buzina">buzina</label><br>
+            
+            <input type="checkbox" id="luzRe"> <label for="luzRe">luz de ré</label><br>
+            
+            <input type="checkbox" id="lanternaPosteriorDireita"> <label for="lanternaPosteriorDireita">lanterna posterior direita</label><br>
+            <input type="checkbox" id="lanternaPosteriorEsquerda"> <label for="lanternaPosteriorEsquerda">lanterna posterior esquerda</label><br>
+
+            <input type="checkbox" id="setaPosteriorDireita"> <label for="setaPosteriorDireita">seta posterior direita</label><br>
+            <input type="checkbox" id="setaPosteriorEsquerda"> <label for="setaPosteriorEsquerda">seta posterior esquerda</label><br>
+            
+            <input type="checkbox" id="freio"> <label for="freio">freio</label><br>
+            
+            <input type="checkbox" id="direcao"> <label for="direcao">direção</label><br>
+            <input type="checkbox" id="airbags"> <label for="airbags">airbags</label><br>
+
+            <input type="checkbox" id="cintoMotorista"> <label for="cintoMotorista">cinto do motorista</label><br>
+            <input type="checkbox" id="cintoPassageiro"> <label for="cintoPassageiro">cinto do passageiro</label><br>
+            <input type="checkbox" id="cintoTraseiroEsquerdo"> <label for="cintoTraseiroEsquerdo">cinto traseiro esquerdo</label><br>
+            <input type="checkbox" id="cintoTraseiroCentral"> <label for="cintoTraseiroCentral">cinto traseiro central</label><br>
+            <input type="checkbox" id="cintoTraseiroDireito"> <label for="cintoTraseiroDireito">cinto traseiro direito</label><br>
         </div>
         <button onclick="testePneumatico()" style="margin-top: 10px;">Finalizar</button>
     </div>
@@ -914,8 +945,6 @@ Delegado:${delegado}`;
         }
         
     
-
-
         async function gerarDocx() {
             try {
                 // Criar novo documento
@@ -944,9 +973,14 @@ Delegado:${delegado}`;
                                             new docx.TextRun({
                                                 font:'Arial',
                                                 alignment: docx.AlignmentType.RIGHT,
-                                                text: 'BO: ' + document.getElementById('textoAnalisado').
-                                                value.match(/(?:BO|Boletim)[:\s]+([^\n]+)/i)[1]
-                                            })                                            
+                                                text: 'BO: '
+                                            }),          
+                                            new docx.TextRun({
+                                                font:'Arial',
+                                                alignment: docx.AlignmentType.LEFT,
+                                                text: 'REP '
+                                            })   
+                                  
                                         ],
                                     }),
                                 ],
