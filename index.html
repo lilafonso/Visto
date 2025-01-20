@@ -13,14 +13,14 @@
 <body>
     <h1>Laudo de Vistoria</h1>
     <p>Use as preferências default, carregue o arquivo com as suas preferências ou edite e salve suas preferências:</p>
-    <button id='importarPreferências' onclick="importarPref()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 45px; width: 49%;">Importar Preferências</button>
-    <button id='salvarPreferências' onclick="salvarPref()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 45px; width: 49%;">Salvar Preferências</button>
+    <button id='importarPreferências' onclick="importarPref()" style="padding: 10px 40px; font-size: 1.2em; margin: 5px 0; height: 50px; width: 49%;">Importar Preferências</button>
+    <button id='salvarPreferências' onclick="salvarPref()" style="padding: 10px 40px; font-size: 1.2em; margin: 5px 0; height: 50px; width: 49%;">Salvar Preferências</button>
 
     <textarea id="dadosBase" name="dadosBase" rows="5"></textarea>
     
     <p>Capture uma imagem, abra uma foto ou cole o texto extraído OCR:</p>
-    <button id='captFoto' onclick="capturarFoto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 45px; width: 49%;">Capturar Foto</button>
-    <button id='abrirFoto' onclick="abrirFoto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 45px; width: 49%;">Abrir Foto</button>
+    <button id='captFoto' onclick="capturarFoto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 50px; width: 49%;">Capturar Foto</button>
+    <button id='abrirFoto' onclick="abrirFoto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 50px; width: 49%;">Abrir Foto</button>
 
     <video id="camera" autoplay></video>
     <canvas id="foto" style="display:none;"></canvas>
@@ -29,14 +29,14 @@
 
     <textarea id="textoOCR" name="textoOCR" placeholder="Cole aqui ou aguarde o processamento." rows="5"></textarea>
      
-    <button id='analisarTexto' onclick="analisarTexto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Analisar Texto</button>
+    <button id='analisarTexto' onclick="analisarTexto()" style="padding: 10px 30px; font-size: 1.2em; height: 50px; margin: 5px 0; width: 100%;">Analisar Texto</button>
     
     <textarea id="textoAnalisado" placeholder="Informações processadas." name="textoAnalisado" rows="5"></textarea>
 
-    <button id='novoDano' onclick="abrirPopupDano()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Novo Dano</button>
+    <button id='novoDano' onclick="abrirPopupDano()" style="padding: 10px 30px; font-size: 1.2em; height: 50px; margin: 5px 0; width: 100%;">Novo Dano</button>
 
     
-    <div id="popupTipoDano" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 10px; border: 1px solid black; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+    <div id="popupTipoDano" class="popup">
         <h3>Tipo de Dano</h3>
 
         <div>
@@ -47,7 +47,7 @@
         <button onclick="proximoOrientacao()" style="margin-top: 10px;">Próximo</button>
     </div>
 
-    <div id="popupOrientacao" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid black; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+    <div id="popupOrientacao" class="popup">
         <h3>Orientação</h3>
         <div>
             <input type="checkbox" id="frenteTras"> <label for="frenteTras">de frente para trás</label><br>
@@ -60,7 +60,7 @@
         <button onclick="proximoSituado()" style="margin-top: 10px;">Próximo</button>
     </div>
 
-    <div id="popupSituado" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid black; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+    <div id="popupSituado" class="popup">
         <h3>Situado</h3>
         <div>
             <input type="checkbox" id="pa"> <label for="pa">na porção anterior</label><br>
@@ -83,9 +83,75 @@
 
     <textarea id="danosVeic" placeholder="Danos no veículo" name="danosVeic" rows="5"></textarea>
 
-    <button id='novoTeste' onclick="abrirPopupTeste()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Novo Teste</button>
+    <div style="text-align:center; display: inline-flex; width: 100%; padding: 2px;">
+    <button id='novoTeste' onclick="abrirPopupTeste()" style="padding: 10px 20px; height: 70px; font-size: 1.2em; margin: 5px 0; width: 50%;">Exames no veículo</button>
 
-    <div id="popupTeste" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 10px; border: 1px solid black; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+    <button id='veicOK' onclick="document.getElementById('testesVeic').value = 'Os seus sistemas de segurança para o tráfego (freio, direção e elétrico) se encontravam articulados e atuantes, quando dos exames. Pneumáticos em estado regular.'" style="padding: 10px 20px; font-size: 1.2em; height: 70px; margin: 5px 0; width: 25%;">Veículo OK</button>
+
+    <button id='veicDep' onclick="document.getElementById('testesVeic').value = 'Veículo em estado de desmontagem completa, prejudicando os exames de praxe.'"style="padding: 10px 20px; font-size: 1.2em; height: 70px; margin: 5px 0; width: 25%;">Veículo Depenado</button>
+    </div>
+
+    <div id="popupTeste" class="popup" >
+        <h3>Sistema de segurança</h3>
+        <div>
+            <input type="radio" id="a1" name="sistemasseg"> <label for="a1">operantes</label><br>
+            <input type="radio" id="a2" name="sistemasseg"> <label for="a2">inoperantes</label><br>
+            <input type="radio" id="a3" name="sistemasseg"> <label for="a3">prejudicados pelos danos</label><br>
+        </div>
+        <button onclick="proximoSSeg()" style="margin-top: 10px;">Próximo</button>
+    </div>
+
+    <div id="popupSistSeg" class="popup">
+        <h3>Marcar não funcionais</h3> 
+        <!-- em caso de operante -->
+        <div>
+            <input type="checkbox" id="lanternaAnteriorDireita"> <label for="lanternaAnteriorDireita">lanterna anterior direita</label><br>
+            <input type="checkbox" id="lanternaAnteriorEsquerda"> <label for="lanternaAnteriorEsquerda">lanterna anterior esquerda</label><br>
+        </div>
+        <button onclick="testePneumatico()" style="margin-top: 10px;">Finalizar</button>
+    </div>
+
+    <div id="popupSistSeg2" class="popup">
+        <h3>Marcar observações</h3> 
+        <!-- em caso de inoperante -->
+        <div>
+            <input type="checkbox" id="direc"> <label for="direc">Direção articulada e atuante.</label><br>
+            <input type="checkbox" id="freio"> <label for="freio">Freio articulado e apresentando resistência.</label><br>
+        </div>
+        <button onclick="testePneumatico()" style="margin-top: 10px;">Finalizar</button>
+    </div>
+
+    <div id="popupPneumatico" class="popup">
+        <h3>Geral do Pneumáticos</h3> 
+        <!-- em caso de inoperante -->
+        <div>
+            <input type="radio" id="b1" name="pneu"> <label for="b1">regulares</label><br>
+            <input type="radio" id="b2" name="pneu"> <label for="b2">irregulares</label><br>
+            <input type="radio" id="b3" name="pneu"> <label for="b3">desinflados</label><br>
+        </div>
+        <button onclick="testePneumatico2()" style="margin-top: 10px;">Finalizar</button>
+    </div>
+    
+    <div id="popupPneumatico2" class="popup">
+        <h3>Exceção dos pneus</h3> 
+        <!-- em caso de inoperante -->
+        <div>
+            <input type="checkbox" id="pn1"> <label for="pn1">Pneumático anterior direito irregular.</label><br>
+            <input type="checkbox" id="pn2"> <label for="pn2">Pneumático anterior esquerdo irregular.</label><br>
+            <input type="checkbox" id="pn3"> <label for="pn3">Pneumático posterior direito irregular.</label><br>
+            <input type="checkbox" id="pn4"> <label for="pn4">Pneumático posterior esquerdo irregular.</label><br>
+            <input type="checkbox" id="pn1d"> <label for="pn1d">Pneumático anterior direito desinflado.</label><br>
+            <input type="checkbox" id="pn2d"> <label for="pn2d">Pneumático anterior esquerdo desinflado.</label><br>
+            <input type="checkbox" id="pn3d"> <label for="pn3d">Pneumático posterior direito desinflado.</label><br>
+            <input type="checkbox" id="pn4d"> <label for="pn4d">Pneumático posterior esquerdo desinflado.</label><br>
+        </div>
+        <button onclick="finalizarTeste()" style="margin-top: 10px;">Finalizar</button>
+    </div>
+    
+
+    
+
+    <!-- <div id="popupTeste" class="popup">
         <h3>Marcar não funcionais</h3>
         <div>
             <input type="checkbox" id="lanternaAnteriorDireita"> <label for="lanternaAnteriorDireita">lanterna anterior direita</label><br>
@@ -127,9 +193,9 @@
             <input type="checkbox" id="cintoTraseiroDireito"> <label for="cintoTraseiroDireito">cinto traseiro direito</label><br>
         </div>
         <button onclick="proximoAvariados()" style="margin-top: 10px;">Próximo</button>
-    </div>
+    </div> -->
 
-    <div id="popupAvariados" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 10px; border: 1px solid black; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+    <!-- <div id="popupAvariados" class="popup">
         <h3>Avariados no acidente</h3>
         <div>
             <input type="checkbox" id="lanternaAnteriorDireitaAv"> <label for="lanternaAnteriorDireitaAv">lanterna anterior direita</label><br>
@@ -171,7 +237,7 @@
             <input type="checkbox" id="cintoTraseiroDireitoAv"> <label for="cintoTraseiroDireitoAv">cinto traseiro direito</label><br>
         </div>
         <button onclick="finalizarTeste()" style="margin-top: 10px;">Finalizar</button>
-    </div>
+    </div> -->
 
     <textarea id="testesVeic" placeholder="Testes veiculares" name="testesVeic" rows="5"></textarea>
 
@@ -180,27 +246,111 @@
     <button id='pegarFotos' onclick="pegaFotos()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Pegar Fotos</button>
     <button onclick="gerarDocx()" style="margin: 20px 0; padding: 10px 20px;">Gerar Documento Word</button>
     <script>
+
         // Array para armazenar os dadosGerais
         let dadosGerais = [];
-
-        function proximoAvariados() {
-            document.getElementById('popupTeste').style.display = 'none';
-            document.getElementById('popupAvariados').style.display = 'block';
-        }
 
         function abrirPopupTeste() {
             document.getElementById('popupTeste').style.display = 'block';
         }
 
-        function finalizarTeste() {
-            document.getElementById('popupAvariados').style.display = 'none';
-            // Verifica se algum checkbox está marcado em popupTeste e popupAvariados
-            const checkboxesTeste = document.getElementById('popupTeste').querySelectorAll('input[type="checkbox"]:checked');
-            const checkboxesAvariados = document.getElementById('popupAvariados').querySelectorAll('input[type="checkbox"]:checked');
-            
-            if (checkboxesTeste.length === 0 && checkboxesAvariados.length === 0) {
-                document.getElementById('testesVeic').value = 'Os seus sistemas de segurança para o tráfego (freio, direção e elétrico) se encontravam articulados e atuantes, quando dos exames.';
+        function proximoSSeg(){
+            document.getElementById('popupTeste').style.display = 'none';
+            const operantes = document.getElementById('a1');
+            const inoperantes = document.getElementById('a2');
+            const prejudicados = document.getElementById('a3');
+
+            if (operantes.checked) {
+                document.getElementById('popupSistSeg').style.display = 'block';
+            } else if (inoperantes.checked) {
+                document.getElementById('popupSistSeg2').style.display = 'block';
+            } else if (prejudicados.checked) {
+                document.getElementById('popupPneumatico').style.display = 'block';
             }
+            
+            
+        }
+
+        function testePneumatico() {
+            document.getElementById('popupSistSeg').style.display = 'none';
+            document.getElementById('popupSistSeg2').style.display = 'none';
+            document.getElementById('popupPneumatico').style.display = 'block';
+        }
+        function testePneumatico2() {
+            document.getElementById('popupPneumatico').style.display = 'none';
+            document.getElementById('popupPneumatico2').style.display = 'block';
+        }
+
+        
+
+
+
+        function finalizarTeste() {
+            document.getElementById('popupPneumatico2').style.display = 'none';
+            
+            let texto = '';
+            const operantes = document.getElementById('a1');
+            const inoperantes = document.getElementById('a2');
+            const prejudicados = document.getElementById('a3');
+
+            // Verificar sistemas de segurança
+            if (operantes.checked) {
+                texto = 'Os seus sistemas de segurança para o tráfego (freio, direção e elétrico) se encontravam articulados e atuantes, quando dos exames. ';
+                
+                // Verificar itens não funcionais
+                const checkboxesTeste = document.getElementById('popupSistSeg')
+                    .querySelectorAll('input[type="checkbox"]:checked');
+                
+                if (checkboxesTeste.length > 0) {
+                    texto += 'Exceto: ';
+                    checkboxesTeste.forEach((checkbox, index) => {
+                        if (index === checkboxesTeste.length - 1) {
+                            texto += checkbox.nextElementSibling.textContent + '. ';
+                        } else {
+                            texto += checkbox.nextElementSibling.textContent + ', ';
+                        }
+                    });
+                }
+            } else if (inoperantes.checked) {
+                texto = 'Os seus sistemas de segurança para o tráfego se encontravam inoperantes, quando dos exames. ';
+                
+                // Verificar observações
+                const checkboxesAvariados = document.getElementById('popupSistSeg2')
+                    .querySelectorAll('input[type="checkbox"]:checked');
+                
+                checkboxesAvariados.forEach(checkbox => {
+                    texto += checkbox.nextElementSibling.textContent + ' ';
+                });
+            } else if (prejudicados.checked) {
+                texto = 'Os seus sistemas de segurança para o tráfego se encontravam prejudicados pelos danos, quando dos exames. ';
+            }
+
+            // Verificar estado dos pneumáticos
+            const pneuRegular = document.getElementById('b1');
+            const pneuIrregular = document.getElementById('b2'); 
+            const pneuDesinflado = document.getElementById('b3');
+
+            if (pneuRegular.checked) {
+                texto += 'Pneumáticos em estado regular.';
+            } else if (pneuIrregular.checked || pneuDesinflado.checked) {
+                const checkboxesPneu = document.getElementById('popupPneumatico2')
+                    .querySelectorAll('input[type="checkbox"]:checked');
+                
+                if (checkboxesPneu.length > 0) {
+                    checkboxesPneu.forEach((checkbox, index) => {
+                        if (index === 0) {
+                            texto += checkbox.nextElementSibling.textContent;
+                        } else if (index === checkboxesPneu.length - 1) {
+                            texto += ' e ' + checkbox.nextElementSibling.textContent;
+                        } else {
+                            texto += ', ' + checkbox.nextElementSibling.textContent;
+                        }
+                    });
+                }
+            }
+
+            document.getElementById('testesVeic').value = texto;
+
 
         }
 
