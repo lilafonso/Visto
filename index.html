@@ -147,7 +147,7 @@
             <input type="checkbox" id="cintoTraseiroCentral"> <label for="cintoTraseiroCentral">cinto traseiro central</label><br>
             <input type="checkbox" id="cintoTraseiroDireito"> <label for="cintoTraseiroDireito">cinto traseiro direito</label><br>
         </div>
-        <button onclick="testePneumatico()" style="margin-top: 10px;">Finalizar</button>
+        <button onclick="testePneumatico()" style="margin-top: 10px;">Próximo</button>
     </div>
 
     <div id="popupSistSeg2" class="popup">
@@ -157,7 +157,7 @@
             <input type="checkbox" id="direc"> <label for="direc">Direção articulada e atuante.</label><br>
             <input type="checkbox" id="freio"> <label for="freio">Freio articulado e apresentando resistência.</label><br>
         </div>
-        <button onclick="testePneumatico()" style="margin-top: 10px;">Finalizar</button>
+        <button onclick="testePneumatico()" style="margin-top: 10px;">Próximo</button>
     </div>
 
     <div id="popupPneumatico" class="popup">
@@ -168,7 +168,7 @@
             <input type="radio" id="b2" name="pneu"> <label for="b2">irregulares</label><br>
             <input type="radio" id="b3" name="pneu"> <label for="b3">desinflados</label><br>
         </div>
-        <button onclick="testePneumatico2()" style="margin-top: 10px;">Finalizar</button>
+        <button onclick="testePneumatico2()" style="margin-top: 10px;">Próximo</button>
     </div>
     
     <div id="popupPneumatico2" class="popup">
@@ -371,6 +371,7 @@ Núcleo: Núcleo de Perícias Criminalísticas de Americana
 Equipe:`;
         }
 
+
         function importarPref() {
             const input = document.createElement('input');
             input.type = 'file';
@@ -407,6 +408,9 @@ Equipe:`;
             window.URL.revokeObjectURL(url);
         }
 
+
+
+        
         let video = document.getElementById('camera');
         let canvas = document.getElementById('foto');
         
@@ -781,7 +785,7 @@ Equipe:`;
             if (matchDelegacia) {
                 // Pega o grupo capturado que exclui os 3 dígitos iniciais
                 delegacia = matchDelegacia[1].trim().slice(6);
-                console.log(matchDelegacia);
+
             }
             // Montar texto de resultado
 
@@ -799,6 +803,7 @@ Delegado:${delegado}`;
 
             textoAnalisado.value = resultado;
         }
+
         async function pegaFotos() {
             try {
                 // Solicitar permissão para acessar arquivos
@@ -855,8 +860,59 @@ Delegado:${delegado}`;
             }
         }
         
+
+        function montaLaudo(){
+            const dadosBase = document.getElementById('dadosBase').value;
+            let linhas = dadosBase.split('\n');
+
+
+            for (let linha of linhas) {
+                if (linha.startsWith('Perito:')) {
+                    dadosGerais.push(linha.replace('Perito:', '').trim());
+                }
+                else if (linha.startsWith('Diretor:')) {
+                    dadosGerais.push(linha.replace('Diretor:', '').trim());
+                }
+                else if (linha.startsWith('Núcleo:')) {
+                    dadosGerais.push(linha.replace('Núcleo:', '').trim());
+                }
+                else if (linha.startsWith('Equipe:')) {
+                    dadosGerais.push(linha.replace('Equipe:', '').trim());
+                }
+            }
+            // Extrair informações do textoAnalisado
+            const textoAnalisado = document.getElementById('textoAnalisado').value;
+            linhas = textoAnalisado.split('\n');
+            
+            for (let linha of linhas) {
+                // Remove os títulos e adiciona apenas o conteúdo
+                if (linha.includes(':')) {
+                    const conteudo = linha.split(':')[1].trim();
+                    if (conteudo) {
+                        dadosGerais.push(conteudo);
+                    }
+                }
+            }
+
+
+            ///entender pq delegado so aparece com texto
+            var currentDate = new Date();
+            var day = ("0" + currentDate.getDate()).slice(-2);
+            var month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+            var mesExtenso = ["janeiro", "fevereiro", "março", "abril", "maio","junho","julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+            
+            let data =	
+            '\r\n\tEm '+ day + " de "+mesExtenso[currentDate.getMonth()]+" de "+currentDate.getFullYear() + (dadosGerais[4]!=""? ', na '+dadosGerais[4]: "") + (dadosGerais[3]!=""? ', no '+dadosGerais[3]: "")+', do Instituto de Criminalística, da Superintendência da Polícia Técnico-Científica, da Secretaria de Segurança Pública do Estado de São Paulo, em conformidade com o disposto no Decreto-Lei n.º 3.689/41, o Diretor deste instituto '+ dadosGerais[2]+' designou o Perito Criminal '+dadosGerais[1]+' para proceder a este exame pericial, em atendimento à requisição da autoridade de polícia judiciária da '+ dadosGerais[13]+', ' +dadosGerais[13];
+
+
+        }
     
         async function gerarDocx() {
+
+
+            montaLaudo();
+            console.log(dadosGerais);
+
             try {
                 // Criar novo documento
                 const doc = new docx.Document({
