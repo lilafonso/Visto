@@ -11,7 +11,9 @@
 
 </head>
 <body>
-    
+    <img id="cabeca" src="cabecalho.png" alt="Cabeçalho" style="width: 100%; ">
+
+
     <h1>Laudo de Vistoria</h1>
     <p>Use as preferências default, carregue o arquivo com as suas preferências ou edite e salve suas preferências:</p>
     
@@ -963,13 +965,14 @@ Delegado:${delegado}`;
                                     new docx.Paragraph({
                                         font:'Arial',
                                         children: [
-                                            // new docx.ImageRun({
-                                            //     data: buffer,
-                                            //     transformation: {
-                                            //         width: 600,
-                                            //         height: 75,
-                                            //     },
-                                            // }),
+                                            new docx.ImageRun({
+                                                data: fs.readFileSync("cabecalho.png"),
+                                                transformation: {
+                                                    width: 600,
+                                                    height: 100
+                                                },
+                                            }),
+
                                             new docx.TextRun({
                                                 font:'Arial',
                                                 alignment: docx.AlignmentType.RIGHT,
@@ -1035,6 +1038,7 @@ Delegado:${delegado}`;
                 });
                 // Adicionar fotos ao documento
                 const fotos = document.getElementsByClassName('foto-importada');
+
                 if (fotos.length > 0) {
                     for (let foto of fotos) {
                         // Converter imagem para base64
