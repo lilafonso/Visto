@@ -93,7 +93,7 @@
 
     <div style="text-align:center; display: inline-flex; width: 100%; padding: 2px;">
 
-    <button id='novoTeste' onclick="abrirPopupTeste()" style="padding: 10px 20px; height: 70px; font-size: 1.2em; margin: 5px 0; width: 34%;">Exames no veículo</button>
+    <button id='novoTeste' onclick="abrirPopupTeste()" style="padding: 10px 20px; height: 70px; font-size: 1.2em; margin: 5px 0; width: 34%;">Exames veículo</button>
 
     <button id='veicOK' onclick="document.getElementById('testesVeic').value = 'Os seus sistemas de segurança para o tráfego (freio, direção e elétrico) se encontravam articulados e atuantes, quando dos exames. Pneumáticos em estado regular.'" style="padding: 10px 20px; font-size: 1.2em; height: 70px; margin: 5px 0; width: 33%;">Veículo OK</button>
 
@@ -931,7 +931,7 @@ Delegado:${delegado}`;
                         const img = document.createElement('img');
                         img.src = url;
                         img.className = 'foto-importada';
-                        img.style.maxWidth = '100%';
+                        img.style.maxWidth = '454';
                         img.style.marginTop = '10px';
                         document.body.appendChild(img);
                     }
@@ -965,22 +965,21 @@ Delegado:${delegado}`;
                                     new docx.Paragraph({
                                         font:'Arial',
                                         children: [
-                                            new docx.ImageRun({
-                                                data: await fetch('cabecalho.png').then(r => r.arrayBuffer()),
-                                                transformation: {
-                                                    width: 600,
-                                                    height: 100
-                                                },
-                                            }),
-
+                                            // new docx.ImageRun({
+                                            //     data: await fetch('cabecalho.png').then(r => r.arrayBuffer()),
+                                            //     transformation: {
+                                            //         width: 628,
+                                            //         height: 78
+                                            //     },
+                                            // }),
                                             new docx.TextRun({
                                                 font:'Arial',
-                                                alignment: docx.AlignmentType.RIGHT,
+                                                alignment: docx.AlignmentType.LEFT,
                                                 text: 'BO: '
                                             }),          
                                             new docx.TextRun({
                                                 font:'Arial',
-                                                alignment: docx.AlignmentType.LEFT,
+                                                alignment: docx.AlignmentType.RIGHT,
                                                 text: 'REP '
                                             })   
                                   
@@ -1057,8 +1056,8 @@ Delegado:${delegado}`;
                                         new docx.ImageRun({
                                             data: Uint8Array.from(atob(base64), c => c.charCodeAt(0)),
                                             transformation: {
-                                                width: 500,
-                                                height: 400
+                                                width: 454,
+                                                height: 340
                                             }
                                         })
                                     ],
