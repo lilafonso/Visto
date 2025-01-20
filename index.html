@@ -13,14 +13,19 @@
 <body>
     <h1>Laudo de Vistoria</h1>
     <p>Use as preferências default, carregue o arquivo com as suas preferências ou edite e salve suas preferências:</p>
-    <button id='importarPreferências' onclick="importarPref()" style="padding: 10px 40px; font-size: 1.2em; margin: 5px 0; height: 50px; width: 49%;">Importar Preferências</button>
-    <button id='salvarPreferências' onclick="salvarPref()" style="padding: 10px 40px; font-size: 1.2em; margin: 5px 0; height: 50px; width: 49%;">Salvar Preferências</button>
-
+    
+    <div style="text-align:center; display: inline-flex; width: 100%; padding: 2px;">
+        <button id='importarPreferências' onclick="importarPref()" style="padding: 10px 40px; font-size: 1.2em; margin: 5px 0; height: 70px; width: 50%;">Importar Preferências</button>
+        <button id='salvarPreferências' onclick="salvarPref()" style="padding: 10px 40px; font-size: 1.2em; margin: 5px 0; height: 70px; width: 50%;">Salvar Preferências</button>
+        </div>
     <textarea id="dadosBase" name="dadosBase" rows="5"></textarea>
     
     <p>Capture uma imagem, abra uma foto ou cole o texto extraído OCR:</p>
-    <button id='captFoto' onclick="capturarFoto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 50px; width: 49%;">Capturar Foto</button>
-    <button id='abrirFoto' onclick="abrirFoto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 50px; width: 49%;">Abrir Foto</button>
+    <div style="text-align:center; display: inline-flex; width: 100%; padding: 2px;">
+    <button id='captFoto' onclick="capturarFoto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 70px; width: 50%;">Capturar Foto</button>
+    <button id='abrirFoto' onclick="abrirFoto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 70px; width: 50%;">Abrir Foto</button>
+
+    </div>
 
     <video id="camera" autoplay></video>
     <canvas id="foto" style="display:none;"></canvas>
@@ -84,6 +89,7 @@
     <textarea id="danosVeic" placeholder="Danos no veículo" name="danosVeic" rows="5"></textarea>
 
     <div style="text-align:center; display: inline-flex; width: 100%; padding: 2px;">
+
     <button id='novoTeste' onclick="abrirPopupTeste()" style="padding: 10px 20px; height: 70px; font-size: 1.2em; margin: 5px 0; width: 50%;">Exames no veículo</button>
 
     <button id='veicOK' onclick="document.getElementById('testesVeic').value = 'Os seus sistemas de segurança para o tráfego (freio, direção e elétrico) se encontravam articulados e atuantes, quando dos exames. Pneumáticos em estado regular.'" style="padding: 10px 20px; font-size: 1.2em; height: 70px; margin: 5px 0; width: 25%;">Veículo OK</button>

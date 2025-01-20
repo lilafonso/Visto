@@ -36,8 +36,8 @@ body {
   padding: 20px;
   border: 1px solid black;
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
-  min-width: 300px;
-  min-height: 200px;
+  min-width: 90%;
+  min-height: 90%;
 }
 
 #resultado {
