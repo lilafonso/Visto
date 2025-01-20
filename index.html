@@ -966,7 +966,7 @@ Delegado:${delegado}`;
                                         font:'Arial',
                                         children: [
                                             new docx.ImageRun({
-                                                data: fs.readFileSync("cabecalho.png"),
+                                                data: await fetch('cabecalho.png').then(r => r.arrayBuffer()),
                                                 transformation: {
                                                     width: 600,
                                                     height: 100
