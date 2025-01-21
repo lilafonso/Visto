@@ -192,11 +192,27 @@
 
     
     <button id='pegarFotos' onclick="pegaFotos()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Pegar Fotos</button>
-    <button onclick="gerarDocx()" style="margin: 20px 0; padding: 10px 20px;">Gerar Documento Word</button>
+    <button onclick="montaLaudo()" style="margin: 20px 0; padding: 10px 20px;">Gerar Documento Word</button>
     <script>
 
         // Array para armazenar os dadosGerais
-        let dadosGerais = [];
+        let dadosGerais = [{
+            naturezaDoExame:"",
+            Perito:"",
+            Diretor:"",
+            Nucleo:"",
+            Equipe:"",
+            placa:"",
+            chassi:"",
+            tipo:"",
+            anoFabricacao:"",
+            marca:"",
+            cor:"",
+            protocolo:"",
+            bo:"",
+            delegacia:"",
+            delegado:""
+        }];
 
         function abrirPopupTeste() {
             document.getElementById('popupTeste').style.display = 'block';
@@ -638,14 +654,15 @@ Equipe:`;
                 // Remove eventuais ':' da string
                 naturezaDoExame = naturezaDoExame.replace(/:/g, '');
             }
-            dadosGerais.push(naturezaDoExame);
+            dadosGerais.naturezaDoExame = naturezaDoExame;
+            
             // Procurar Placa
             const regexPlaca = /placa:?\s*([A-Z0-9]{7})/i;
             const matchPlaca = texto.match(regexPlaca);
             if (matchPlaca) {
                 placa = matchPlaca[1].trim();
             }
-            
+            dadosGerais.placa = placa;
             // Procurar Chassi
             // Procurar Chassi com tolerância a erros e espaços
             const regexChassiFlexivel = /chassi:?\s*([A-Z0-9\s]{15,25})/i; 
@@ -672,6 +689,9 @@ Equipe:`;
             if (matchChassi) {
                 chassi = matchChassi[1].trim();
             }
+            dadosGerais.chassi = chassi;
+
+            
             // Procurar Tipo
             
             let tipo = '';
@@ -680,6 +700,7 @@ Equipe:`;
             if (matchTipo) {
                 tipo = matchTipo[1].trim();
             }
+            dadosGerais.tipo = tipo;
 
             // Procurar Ano de Fabricação
             let anoFabricacao = '';
@@ -688,8 +709,8 @@ Equipe:`;
             if (matchAnoFabricacao) {
                 anoFabricacao = matchAnoFabricacao[1].trim();
             }
-            
-            
+            dadosGerais.anoFabricacao = anoFabricacao;
+
             // Procurar Marca até a palavra Combustível
             let marca = '';
             const regexMarca = /marca:?\s*([^]*?)(?=\s*Comb|$)/i;
@@ -697,6 +718,8 @@ Equipe:`;
             if (matchMarca) {
                 marca = matchMarca[1].trim();
             }
+
+            dadosGerais.marca = marca;
             // Procurar Cor como palavra isolada
 
             let cor = '';
@@ -705,28 +728,29 @@ Equipe:`;
             if (matchCorIsolada) {
                 // Pegar apenas a primeira palavra da cor
                 cor = matchCorIsolada[1].trim().split(/\s+/)[0];
-            // Converter cores no masculino para feminino
-            const coresMasculino = {
-                'branco': 'branca',
-                'preto': 'preta', 
-                'vermelho': 'vermelha',
-                'amarelo': 'amarela',
-                'azul': 'azul',
-                'verde': 'verde',
-                'marrom': 'marrom',
-                'cinza': 'cinza',
-                'prata': 'prata',
-                'dourado': 'dourada',
-                'laranja': 'laranja',
-                'roxo': 'roxa',
-                'bege': 'bege'
-            };
-            
-            cor = cor.toLowerCase();
-            if (coresMasculino[cor]) {
-                cor = coresMasculino[cor];
+                // Converter cores no masculino para feminino
+                const coresMasculino = {
+                    'branco': 'branca',
+                    'preto': 'preta', 
+                    'vermelho': 'vermelha',
+                    'amarelo': 'amarela',
+                    'azul': 'azul',
+                    'verde': 'verde',
+                    'marrom': 'marrom',
+                    'cinza': 'cinza',
+                    'prata': 'prata',
+                    'dourado': 'dourada',
+                    'laranja': 'laranja',
+                    'roxo': 'roxa',
+                    'bege': 'bege'
+                };
+                
+                cor = cor.toLowerCase();
+                if (coresMasculino[cor]) {
+                    cor = coresMasculino[cor];
+                }
             }
-            }
+            dadosGerais.cor = cor;
 
 
 
@@ -738,6 +762,7 @@ Equipe:`;
             if (matchProtocolo) {
                 protocolo = matchProtocolo[0];
             }
+            dadosGerais.protocolo = protocolo;
 
             // Procurar BO/Boletim
             let bo = '';
@@ -761,9 +786,11 @@ Equipe:`;
                 boletim = bo;
             }
 
+            dadosGerais.bo = bo;
+
             // Procurar nome do Delegado
             let delegado = '';
-            const regexDelegado = /(?:Dr\.|Dra\.|Delegado|Delegada)[.\s]+([^,\n]+)/i;
+            const regexDelegado = /(?:Dr\.|Dra\.|Delegado|Delegada|Delegado\(a\))[.\s]+([^,\n]+)/i; 
 
             const matchDelegado = texto.search(regexDelegado);
                         
@@ -772,10 +799,15 @@ Equipe:`;
                 // Procura um nome antes da posição do delegado
                 const textoAntesDoMatch = texto.substring(0, matchDelegado);
                 const linhas = textoAntesDoMatch.split('\n');
-                const ultimaLinha = linhas[linhas.length - 1].trim();
+                let ultimaLinha = linhas[linhas.length - 1].trim();
                 if (ultimaLinha=="") ultimaLinha = linhas[linhas.length - 2].trim();
                 delegado = ultimaLinha;
+
             }
+
+            
+            dadosGerais.delegado =delegado;
+
             // Procurar Delegacia
             let delegacia = '';
             //const regexDelegacia = /(?:\d{3}\s*[-]?\s*)?([^,\n]*Delegacia[^,\n]*)/i;
@@ -787,6 +819,7 @@ Equipe:`;
                 delegacia = matchDelegacia[1].trim().slice(6);
 
             }
+            dadosGerais.delegacia = delegacia;
             // Montar texto de resultado
 
             const resultado = `Natureza do Exame: ${naturezaDoExame}
@@ -868,31 +901,19 @@ Delegado:${delegado}`;
 
             for (let linha of linhas) {
                 if (linha.startsWith('Perito:')) {
-                    dadosGerais.push(linha.replace('Perito:', '').trim());
+                    dadosGerais.Perito = linha.replace('Perito:', '').trim();
                 }
                 else if (linha.startsWith('Diretor:')) {
-                    dadosGerais.push(linha.replace('Diretor:', '').trim());
+                    dadosGerais.Diretor = linha.replace('Diretor:', '').trim();
                 }
                 else if (linha.startsWith('Núcleo:')) {
-                    dadosGerais.push(linha.replace('Núcleo:', '').trim());
+                    dadosGerais.Nucleo = linha.replace('Núcleo:', '').trim();
                 }
                 else if (linha.startsWith('Equipe:')) {
-                    dadosGerais.push(linha.replace('Equipe:', '').trim());
+                    dadosGerais.Equipe = linha.replace('Equipe:', '').trim();
                 }
             }
-            // Extrair informações do textoAnalisado
-            const textoAnalisado = document.getElementById('textoAnalisado').value;
-            linhas = textoAnalisado.split('\n');
-            
-            for (let linha of linhas) {
-                // Remove os títulos e adiciona apenas o conteúdo
-                if (linha.includes(':')) {
-                    const conteudo = linha.split(':')[1].trim();
-                    if (conteudo) {
-                        dadosGerais.push(conteudo);
-                    }
-                }
-            }
+
 
 
             ///entender pq delegado so aparece com texto
@@ -902,16 +923,15 @@ Delegado:${delegado}`;
             var mesExtenso = ["janeiro", "fevereiro", "março", "abril", "maio","junho","julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
             
             let data =	
-            '\r\n\tEm '+ day + " de "+mesExtenso[currentDate.getMonth()]+" de "+currentDate.getFullYear() + (dadosGerais[4]!=""? ', na '+dadosGerais[4]: "") + (dadosGerais[3]!=""? ', no '+dadosGerais[3]: "")+', do Instituto de Criminalística, da Superintendência da Polícia Técnico-Científica, da Secretaria de Segurança Pública do Estado de São Paulo, em conformidade com o disposto no Decreto-Lei n.º 3.689/41, o Diretor deste instituto '+ dadosGerais[2]+' designou o Perito Criminal '+dadosGerais[1]+' para proceder a este exame pericial, em atendimento à requisição da autoridade de polícia judiciária da '+ dadosGerais[13]+', ' +dadosGerais[13];
-
-
+            '\r\n\tEm '+ day + " de "+mesExtenso[currentDate.getMonth()]+" de "+currentDate.getFullYear() + (dadosGerais.Equipe!=""? ', na '+dadosGerais.Equipe: "") + (dadosGerais.Nucleo!=""? ', no '+dadosGerais.Nucleo: "")+', do Instituto de Criminalística, da Superintendência da Polícia Técnico-Científica, da Secretaria de Segurança Pública do Estado de São Paulo, em conformidade com o disposto no Decreto-Lei n.º 3.689/41, o Diretor deste instituto '+ dadosGerais.Diretor+' designou o Perito Criminal '+dadosGerais.Perito+' para proceder a este exame pericial, em atendimento à requisição da autoridade de polícia judiciária da '+ dadosGerais.delegacia + (dadosGerais.delegado!=""? ', '+dadosGerais.delegado+'.' : ".");
+    
         }
     
         async function gerarDocx() {
 
 
             montaLaudo();
-            console.log(dadosGerais);
+
 
             try {
                 // Criar novo documento
