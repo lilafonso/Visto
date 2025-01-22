@@ -76,15 +76,15 @@
             <input type="checkbox" id="pae"> <label for="pae">na porção anterior esquerda</label><br>
             <input type="checkbox" id="pp"> <label for="pp">na porção posterior</label><br>
             <input type="checkbox" id="ppd"> <label for="ppd">na porção posterior direita</label><br>
-            <input type="checkbox" id="ppe"> <label for="ppd">na porção posterior esquerda</label><br>
+            <input type="checkbox" id="ppe"> <label for="ppe">na porção posterior esquerda</label><br>
             <input type="checkbox" id="fe"> <label for="fe">no flanco esquerdo</label><br>
             <input type="checkbox" id="fea"> <label for="fea">no flanco esquerdo, terço anterior</label><br>
-            <input type="checkbox" id="fep"> <label for="fed">no flanco esquerdo, terço posterior</label><br>
+            <input type="checkbox" id="fep"> <label for="fep">no flanco esquerdo, terço posterior</label><br>
             <input type="checkbox" id="fd"> <label for="fd">no flanco direito</label><br>
             <input type="checkbox" id="fda"> <label for="fda">no flanco direito, terço anterior</label><br>
             <input type="checkbox" id="fdp"> <label for="fdp">no flanco direito, terço posterior</label><br>
-            <input type="checkbox" id="fdp"> <label for="fdp">na porção inferior</label><br>
-            <input type="checkbox" id="fdp"> <label for="fdp">na porção superior</label><br>
+            <input type="checkbox" id="pi"> <label for="pi">na porção inferior</label><br>
+            <input type="checkbox" id="ps"> <label for="ps">na porção superior</label><br>
         </div>
         <button onclick="finalizarDano()" style="margin-top: 10px;">FIM</button>
     </div>
@@ -154,7 +154,7 @@
         <h3>Marcar observações</h3> 
         <!-- em caso de inoperante -->
         <div>
-            <input type="checkbox" id="direc"> <label for="direc">Direção articulada e atuante.</label><br>
+            <input type="checkbox" id="direc"> <label for="direc">Direção articulada e apresentando resistência.</label><br>
             <input type="checkbox" id="freio"> <label for="freio">Freio articulado e apresentando resistência.</label><br>
         </div>
         <button onclick="testePneumatico()" style="margin-top: 10px;">Próximo</button>
@@ -167,6 +167,9 @@
             <input type="radio" id="b1" name="pneu"> <label for="b1">regulares</label><br>
             <input type="radio" id="b2" name="pneu"> <label for="b2">irregulares</label><br>
             <input type="radio" id="b3" name="pneu"> <label for="b3">desinflados</label><br>
+            <input type="radio" id="b4" name="pneu"> <label for="b4">ausentes</label><br>
+            <input type="radio" id="b5" name="pneu"> <label for="b5">danificados</label><br>
+            
         </div>
         <button onclick="testePneumatico2()" style="margin-top: 10px;">Próximo</button>
     </div>
@@ -175,14 +178,22 @@
         <h3>Exceção dos pneus</h3> 
         <!-- em caso de inoperante -->
         <div>
-            <input type="checkbox" id="pn1"> <label for="pn1">Pneumático anterior direito irregular.</label><br>
-            <input type="checkbox" id="pn2"> <label for="pn2">Pneumático anterior esquerdo irregular.</label><br>
-            <input type="checkbox" id="pn3"> <label for="pn3">Pneumático posterior direito irregular.</label><br>
-            <input type="checkbox" id="pn4"> <label for="pn4">Pneumático posterior esquerdo irregular.</label><br>
-            <input type="checkbox" id="pn1d"> <label for="pn1d">Pneumático anterior direito desinflado.</label><br>
-            <input type="checkbox" id="pn2d"> <label for="pn2d">Pneumático anterior esquerdo desinflado.</label><br>
-            <input type="checkbox" id="pn3d"> <label for="pn3d">Pneumático posterior direito desinflado.</label><br>
-            <input type="checkbox" id="pn4d"> <label for="pn4d">Pneumático posterior esquerdo desinflado.</label><br>
+            <input type="checkbox" id="pn1"> <label for="pn1">anterior direito - irregular</label><br>
+            <input type="checkbox" id="pn2"> <label for="pn2">anterior esquerdo - irregular</label><br>
+            <input type="checkbox" id="pn3"> <label for="pn3">posterior direito - irregular</label><br>
+            <input type="checkbox" id="pn4"> <label for="pn4">posterior esquerdo - irregular</label><br>
+            <input type="checkbox" id="pn1d"> <label for="pn1d">anterior direito - desinflado</label><br>
+            <input type="checkbox" id="pn2d"> <label for="pn2d">anterior esquerdo - desinflado</label><br>
+            <input type="checkbox" id="pn3d"> <label for="pn3d">posterior direito - desinflado</label><br>
+            <input type="checkbox" id="pn4d"> <label for="pn4d">posterior esquerdo - desinflado</label><br>
+            <input type="checkbox" id="pn1a"> <label for="pn1a">anterior direito - ausente</label><br>
+            <input type="checkbox" id="pn2a"> <label for="pn2a">anterior esquerdo - ausente</label><br>
+            <input type="checkbox" id="pn3a"> <label for="pn3a">posterior direito - ausente</label><br>
+            <input type="checkbox" id="pn4a"> <label for="pn4a">posterior esquerdo - ausente</label><br>
+            <input type="checkbox" id="pn1da"> <label for="pn1da">anterior direito - danificado</label><br>
+            <input type="checkbox" id="pn2da"> <label for="pn2da">anterior esquerdo - danificado</label><br>
+            <input type="checkbox" id="pn3da"> <label for="pn3da">posterior direito - danificado</label><br>
+            <input type="checkbox" id="pn4da"> <label for="pn4da">posterior esquerdo - danificado</label><br>
         </div>
         <button onclick="finalizarTeste()" style="margin-top: 10px;">Finalizar</button>
     </div>
@@ -259,24 +270,27 @@
 
             // Verificar sistemas de segurança
             if (operantes.checked) {
-                texto = 'Os seus sistemas de segurança para o tráfego (freio, direção e elétrico) se encontravam articulados e atuantes, quando dos exames. ';
+                texto = 'Quando dos exames, seus sistemas de segurança para o tráfego (freio, direção e elétrico) se encontravam articulados e atuantes.';
                 
                 // Verificar itens não funcionais
                 const checkboxesTeste = document.getElementById('popupSistSeg')
                     .querySelectorAll('input[type="checkbox"]:checked');
                 
                 if (checkboxesTeste.length > 0) {
-                    texto += 'Exceto: ';
+                    texto = texto.slice(0, -1) + ', exceto: ';
                     checkboxesTeste.forEach((checkbox, index) => {
-                        if (index === checkboxesTeste.length - 1) {
-                            texto += checkbox.nextElementSibling.textContent + '. ';
+                        if(index === 0){
+                            texto += checkbox.nextElementSibling.textContent;
+                        } else if (index === checkboxesTeste.length - 1) {
+                            texto += ' e ' + checkbox.nextElementSibling.textContent;
                         } else {
-                            texto += checkbox.nextElementSibling.textContent + ', ';
+                            texto += ',' +checkbox.nextElementSibling.textContent;
                         }
                     });
+                    texto += '. ';
                 }
             } else if (inoperantes.checked) {
-                texto = 'Os seus sistemas de segurança para o tráfego se encontravam inoperantes, quando dos exames. ';
+                texto = 'Quando dos exames, seus sistemas de segurança para o tráfego se encontravam inoperantes. ';
                 
                 // Verificar observações
                 const checkboxesAvariados = document.getElementById('popupSistSeg2')
@@ -286,32 +300,46 @@
                     texto += checkbox.nextElementSibling.textContent + ' ';
                 });
             } else if (prejudicados.checked) {
-                texto = 'Os seus sistemas de segurança para o tráfego se encontravam prejudicados pelos danos, quando dos exames. ';
+                texto = 'Quando dos exames, seus sistemas de segurança para o tráfego se encontravam prejudicados pelos danos. ';
             }
 
             // Verificar estado dos pneumáticos
             const pneuRegular = document.getElementById('b1');
             const pneuIrregular = document.getElementById('b2'); 
             const pneuDesinflado = document.getElementById('b3');
+            const pneuAusente = document.getElementById('b4');
+            const pneuDanificado = document.getElementById('b5');
+            
 
             if (pneuRegular.checked) {
                 texto += 'Pneumáticos em estado regular.';
-            } else if (pneuIrregular.checked || pneuDesinflado.checked) {
-                const checkboxesPneu = document.getElementById('popupPneumatico2')
-                    .querySelectorAll('input[type="checkbox"]:checked');
-                
-                if (checkboxesPneu.length > 0) {
-                    checkboxesPneu.forEach((checkbox, index) => {
-                        if (index === 0) {
-                            texto += checkbox.nextElementSibling.textContent;
-                        } else if (index === checkboxesPneu.length - 1) {
-                            texto += ' e ' + checkbox.nextElementSibling.textContent;
-                        } else {
-                            texto += ', ' + checkbox.nextElementSibling.textContent;
-                        }
-                    });
-                }
+            } else if (pneuIrregular.checked){
+                texto += 'Pneumáticos em estado aquém do regular.';
+            } else if (pneuDesinflado.checked) {
+                texto += 'Pneumáticos encontravam-se desinflados.';
+            } else if (pneuAusente.checked) {
+                texto += 'Pneumáticos ausentes.';
+            } else if (pneuDanificado.checked) {
+                texto += 'Pneumáticos danificados.';
             }
+            const checkboxesPneu = document.getElementById('popupPneumatico2')
+                .querySelectorAll('input[type="checkbox"]:checked');
+            
+            let tempPneus = ", exceto: ";
+            if (checkboxesPneu.length > 0) {
+                checkboxesPneu.forEach((checkbox, index) => {
+                    if (index === 0) {
+                        tempPneus += checkbox.nextElementSibling.textContent;
+                    } else if (index === checkboxesPneu.length - 1) {
+                        tempPneus += ' e ' + checkbox.nextElementSibling.textContent;
+                    } else {
+                        tempPneus += ', ' + checkbox.nextElementSibling.textContent;
+                    }
+                });
+                tempPneus += '.';
+                texto = texto.slice(0,-1) + tempPneus;
+            }
+            
 
             document.getElementById('testesVeic').value = texto;
 
@@ -653,8 +681,12 @@ Equipe:`;
                 naturezaDoExame = matchNatureza[1].trim();
                 // Remove eventuais ':' da string
                 naturezaDoExame = naturezaDoExame.replace(/:/g, '');
+                // Remover pontos finais da natureza do exame
+                naturezaDoExame = naturezaDoExame.replace(/\.$/, '');
+                
             }
-            dadosGerais.naturezaDoExame = naturezaDoExame;
+
+            dadosGerais.naturezaDoExame = naturezaDoExame.toUpperCase();
             
             // Procurar Placa
             const regexPlaca = /placa:?\s*([A-Z0-9]{7})/i;
@@ -662,7 +694,7 @@ Equipe:`;
             if (matchPlaca) {
                 placa = matchPlaca[1].trim();
             }
-            dadosGerais.placa = placa;
+            dadosGerais.placa = placa.toUpperCase();
             // Procurar Chassi
             // Procurar Chassi com tolerância a erros e espaços
             const regexChassiFlexivel = /chassi:?\s*([A-Z0-9\s]{15,25})/i; 
@@ -689,7 +721,7 @@ Equipe:`;
             if (matchChassi) {
                 chassi = matchChassi[1].trim();
             }
-            dadosGerais.chassi = chassi;
+            dadosGerais.chassi = chassi.toUpperCase();
 
             
             // Procurar Tipo
@@ -700,7 +732,7 @@ Equipe:`;
             if (matchTipo) {
                 tipo = matchTipo[1].trim();
             }
-            dadosGerais.tipo = tipo;
+            dadosGerais.tipo = tipo.toUpperCase();
 
             // Procurar Ano de Fabricação
             let anoFabricacao = '';
@@ -709,7 +741,7 @@ Equipe:`;
             if (matchAnoFabricacao) {
                 anoFabricacao = matchAnoFabricacao[1].trim();
             }
-            dadosGerais.anoFabricacao = anoFabricacao;
+            dadosGerais.anoFabricacao = anoFabricacao.toUpperCase();
 
             // Procurar Marca até a palavra Combustível
             let marca = '';
@@ -719,7 +751,7 @@ Equipe:`;
                 marca = matchMarca[1].trim();
             }
 
-            dadosGerais.marca = marca;
+            dadosGerais.marca = marca.toUpperCase();
             // Procurar Cor como palavra isolada
 
             let cor = '';
@@ -750,7 +782,7 @@ Equipe:`;
                     cor = coresMasculino[cor];
                 }
             }
-            dadosGerais.cor = cor;
+            dadosGerais.cor = cor.toUpperCase();
 
 
 
@@ -762,7 +794,7 @@ Equipe:`;
             if (matchProtocolo) {
                 protocolo = matchProtocolo[0];
             }
-            dadosGerais.protocolo = protocolo;
+            dadosGerais.protocolo = protocolo.toUpperCase();
 
             // Procurar BO/Boletim
             let bo = '';
@@ -786,7 +818,7 @@ Equipe:`;
                 boletim = bo;
             }
 
-            dadosGerais.bo = bo;
+            dadosGerais.bo = bo.toUpperCase();
 
             // Procurar nome do Delegado
             let delegado = '';
@@ -806,7 +838,7 @@ Equipe:`;
             }
 
             
-            dadosGerais.delegado =delegado;
+            dadosGerais.delegado =delegado.toUpperCase();
 
             // Procurar Delegacia
             let delegacia = '';
@@ -819,7 +851,7 @@ Equipe:`;
                 delegacia = matchDelegacia[1].trim().slice(6);
 
             }
-            dadosGerais.delegacia = delegacia;
+            dadosGerais.delegacia = delegacia.toUpperCase();
             // Montar texto de resultado
 
             const resultado = `Natureza do Exame: ${naturezaDoExame}
@@ -835,6 +867,7 @@ Delegacia:${delegacia}
 Delegado:${delegado}`;
 
             textoAnalisado.value = resultado;
+
         }
 
         async function pegaFotos() {
@@ -915,7 +948,6 @@ Delegado:${delegado}`;
             }
 
 
-
             ///entender pq delegado so aparece com texto
             var currentDate = new Date();
             var day = ("0" + currentDate.getDate()).slice(-2);
@@ -923,19 +955,288 @@ Delegado:${delegado}`;
             var mesExtenso = ["janeiro", "fevereiro", "março", "abril", "maio","junho","julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
             
             let data =	
-            '\r\n\tEm '+ day + " de "+mesExtenso[currentDate.getMonth()]+" de "+currentDate.getFullYear() + (dadosGerais.Equipe!=""? ', na '+dadosGerais.Equipe: "") + (dadosGerais.Nucleo!=""? ', no '+dadosGerais.Nucleo: "")+', do Instituto de Criminalística, da Superintendência da Polícia Técnico-Científica, da Secretaria de Segurança Pública do Estado de São Paulo, em conformidade com o disposto no Decreto-Lei n.º 3.689/41, o Diretor deste instituto '+ dadosGerais.Diretor+' designou o Perito Criminal '+dadosGerais.Perito+' para proceder a este exame pericial, em atendimento à requisição da autoridade de polícia judiciária da '+ dadosGerais.delegacia + (dadosGerais.delegado!=""? ', '+dadosGerais.delegado+'.' : ".");
-    
+            '\tEm '+ day + " de "+mesExtenso[currentDate.getMonth()]+" de "+currentDate.getFullYear() + (dadosGerais.Equipe!=""? ', na '+dadosGerais.Equipe: "") + (dadosGerais.Nucleo!=""? ', no '+dadosGerais.Nucleo: "")+', do Instituto de Criminalística, da Superintendência da Polícia Técnico-Científica, da Secretaria de Segurança Pública do Estado de São Paulo, em conformidade com o disposto no Decreto-Lei n.º 3.689/41, o Diretor deste instituto '+ dadosGerais.Diretor+' designou o Perito Criminal '+(dadosGerais.Perito!=""? dadosGerais.Perito: "signatário") +' para proceder a este exame pericial, em atendimento à requisição da autoridade de polícia judiciária da '+ dadosGerais.delegacia + (dadosGerais.delegado!=""? ', '+dadosGerais.delegado+'.' : ".");
+            
+            let aL = [data]; // array de laudo - armazena os textos e o formata {1 - preambulo}
+            let fT = [0];
+
+            aL.push("DISPOSIÇÕES PRELIMINARES"); fT.push(1);
+            
+            data = "\tVeículo apresentado na sede dest" + (dadosGerais.Equipe==""? ""+(dadosGerais.Nucleo!=""? "a Repartição": "e Núcleo") : "a Equipe") +", pela vítima ou seu representante, dotada de Requisição IC e Boletim de Ocorrência, para exame de natureza/objetivo: "+(dadosGerais.naturezaDoExame==""? "Constatação de Danos": dadosGerais.naturezaDoExame)+ ".";
+
+            aL.push(data); fT.push(0);
+
+            aL.push("DO VEÍCULO"); fT.push(1);
+
+            data = "\tConforme ilustrado pelas figuras abaixo, tratava-se de veículo do tipo "+ (dadosGerais.tipo==""? "XXXXXXX": dadosGerais.tipo)+ ", marca/modelo " + (dadosGerais.marca==""? "XXXXXXX": dadosGerais.marca) + ", na cor " + (dadosGerais.cor==""? "XXXXXXX": dadosGerais.cor) + ", ano de fabricação " +(dadosGerais.anoFabricacao==""? "XXXX": dadosGerais.anoFabricacao) + " e placa(s) " + (dadosGerais.placa==""? "XXX0000": dadosGerais.placa) + ".";
+
+            aL.push(data); fT.push(0);
+
+            data = '\tQuando dos exames, o referido veículo '+(document.getElementById('danosVeic').value==""? 'não apresentava danos de aspecto recente.': "apresentava os seguintes danos de aspecto recente:");
+            aL.push(data); fT.push(0);
+            
+
+            if (document.getElementById('danosVeic').value!=""){
+                let linhasDanosVeic = document.getElementById('danosVeic').value.split('\n');
+                for (let linhaDanoVeic of linhasDanosVeic) {
+                    if (linhaDanoVeic!=""){
+                        aL.push(linhaDanoVeic);
+                        fT.push(3);
+                    }
+                }
+            }
+
+            if (document.getElementById('testesVeic').value==""){
+                aL.push('\tOs seus sistemas de segurança para o tráfego (freio, direção e elétrico) se encontravam articulados e atuantes, quando dos exames. Pneumáticos em estado regular.');
+                fT.push(0);
+            }else{
+                aL.push('\t' + document.getElementById('testesVeic').value);
+                fT.push(0);
+            }
+
+            aL.push("DO LEVANTAMENTO FOTOGRÁFICO"); fT.push(1);
+
+
+            
+
+            
+            
+            gerarDocx(aL, fT);
+
         }
     
-        async function gerarDocx() {
-
-
-            montaLaudo();
-
+        async function gerarDocx(textoLaudo, formatacao) {
 
             try {
+                let arrParagraf = [];
+                for (var i=0; i< textoLaudo.length; i++){
+                    //default '0':
+                    var alinhamentoDX = docx.AlignmentType.JUSTIFIED;
+                    var linhaDX = 250;
+                    var antesDX = 20 * 72 * 0.01;
+                    var depoisDX = 20 * 72 * 0.01;
+                    var tamanhoDX = 24;
+                    var negritoDX = false;
+                    var propositoGeral;
+
+                    switch(formatacao[i]){
+                        case 0: // paragrafo
+                            propositoGeral = new docx.Paragraph({
+                                alignment: alinhamentoDX,
+                                spacing:{
+                                    line: linhaDX,
+                                    before: antesDX,
+                                    after: depoisDX
+                                },
+                                children: [
+                                    new docx.TextRun({
+                                        text: textoLaudo[i],
+                                        font:'Arial',
+                                        size: tamanhoDX,
+                                        bold: negritoDX,
+                                    }),
+                                ],
+                            });
+                        break;
+
+                        case 1: //titulo
+                            alinhamentoDX = docx.AlignmentType.LEFT;
+                            linhaDX = 276;
+                            antesDX = 20 * 72 * 0.1;
+                            depoisDX = 20 * 72 * 0.05;
+                            tamanhoDX = 26;
+                            negritoDX = true;
+                            propositoGeral = new docx.Paragraph({
+                                alignment: alinhamentoDX,
+
+
+                                spacing:{
+                                    line: linhaDX,
+                                    before: antesDX,
+                                    after: depoisDX
+                                },
+                                numbering: {
+                                    reference: "my-crazy-numbering",
+                                    level: 1,
+                                },
+                                children: [
+                                    new docx.TextRun({
+                                        text: textoLaudo[i],
+                                        font:'Arial',
+                                        size: tamanhoDX,
+                                        bold: negritoDX,
+                                    }),
+                                ],
+                            });
+                        break;
+                        case 2: //assinatura
+                            alinhamentoDX = docx.AlignmentType.CENTER;
+                            linhaDX = 250;
+                            antesDX = 20 * 72 * 0.01;
+                            depoisDX = 20 * 72 * 0.01;
+                            tamanhoDX = 24;
+                            negritoDX = false;
+                            propositoGeral = new docx.Paragraph({
+                                alignment: alinhamentoDX,
+                                spacing:{
+                                    line: linhaDX,
+                                    before: antesDX,
+                                    after: depoisDX
+                                },
+                                children: [
+                                    new docx.TextRun({
+                                        text: textoLaudo[i],
+                                        font:'Arial',
+                                        size: tamanhoDX,
+                                        bold: negritoDX,
+                                    }),
+                                ],
+                            });
+                        break;
+                        case 3:
+                        propositoGeral = new docx.Paragraph({
+                                alignment: alinhamentoDX,
+                                spacing:{
+                                    line: linhaDX,
+                                    before: antesDX,
+                                    after: depoisDX
+                                },
+                                numbering: {
+                                    reference: "my-unique-bullet-points",
+                                    level: 1,
+                                },
+                                children: [
+                                    new docx.TextRun({
+                                        text: textoLaudo[i],
+                                        font:'Arial',
+                                        size: tamanhoDX,
+                                        bold: negritoDX,
+                                    }),
+                                ],
+                            });
+                        break;
+                    }
+
+                    arrParagraf.push(propositoGeral);
+                
+                }
+
                 // Criar novo documento
                 const doc = new docx.Document({
+                    numbering: {
+                        config: [
+                            {
+                                reference: "my-crazy-numbering",
+                                levels: [
+                                    {
+                                        level: 0,
+                                        format: docx.LevelFormat.UPPER_ROMAN,
+                                        text: "%1",
+                                        alignment: docx.AlignmentType.START,
+                                        style: {
+                                            paragraph: {
+                                                indent: { left: 720, hanging: 2592 },
+                                            },
+                                        },
+                                    },
+                                    {
+                                        level: 1,
+                                        format: docx.LevelFormat.DECIMAL,
+                                        text: "%2.",
+                                        alignment: docx.AlignmentType.START,
+                                        style: {
+                                            paragraph: {
+                                                
+                                                indent: { left: docx.convertInchesToTwip(1), hanging: docx.convertInchesToTwip(0.68) },
+                                            },
+                                        },
+                                    },
+                                    {
+                                        level: 2,
+                                        format: docx.LevelFormat.LOWER_LETTER,
+                                        text: "%3)",
+                                        alignment: docx.AlignmentType.START,
+                                        style: {
+                                            paragraph: {
+                                                indent: { left: docx.convertInchesToTwip(1.5), hanging: docx.convertInchesToTwip(1.18) },
+                                            },
+                                        },
+                                    },
+                                    {
+                                        level: 3,
+                                        format: docx.LevelFormat.UPPER_LETTER,
+                                        text: "%4)",
+                                        alignment: docx.AlignmentType.START,
+                                        style: {
+                                            paragraph: {
+                                                indent: { left: 2880, hanging: 2420 },
+                                            },
+                                        },
+                                    },
+                                ],
+                            },
+                            {
+                                reference: "my-unique-bullet-points",
+                                levels: [
+                                    {
+                                        level: 0,
+                                        format: docx.LevelFormat.BULLET,
+                                        text: "\u1F60",
+                                        alignment: docx.AlignmentType.LEFT,
+                                        style: {
+                                            paragraph: {
+                                                indent: { left: docx.convertInchesToTwip(0.5), hanging: docx.convertInchesToTwip(0.25) },
+                                            },
+                                        },
+                                    },
+                                    {
+                                        level: 1,
+                                        format: docx.LevelFormat.BULLET,
+                                        text: "\u25CF", //u00A5
+                                        alignment: docx.AlignmentType.LEFT,
+                                        style: {
+                                            paragraph: {
+                                                indent: { left: docx.convertInchesToTwip(1), hanging: docx.convertInchesToTwip(0.25) },
+                                            },
+                                        },
+                                    },
+                                    {
+                                        level: 2,
+                                        format: docx.LevelFormat.BULLET,
+                                        text: "\u273F",
+                                        alignment: docx.AlignmentType.LEFT,
+                                        style: {
+                                            paragraph: {
+                                                indent: { left: 2160, hanging: docx.convertInchesToTwip(0.25) },
+                                            },
+                                        },
+                                    },
+                                    {
+                                        level: 3,
+                                        format: docx.LevelFormat.BULLET,
+                                        text: "\u267A",
+                                        alignment: docx.AlignmentType.LEFT,
+                                        style: {
+                                            paragraph: {
+                                                indent: { left: 2880, hanging: docx.convertInchesToTwip(0.25) },
+                                            },
+                                        },
+                                    },
+                                    {
+                                        level: 4,
+                                        format: docx.LevelFormat.BULLET,
+                                        text: "\u2603",
+                                        alignment: docx.AlignmentType.LEFT,
+                                        style: {
+                                            paragraph: {
+                                                indent: { left: 3600, hanging: docx.convertInchesToTwip(0.25) },
+                                            },
+                                        },
+                                    },
+                                ],
+                            },
+                        ],
+                    },
                     sections: [{
                         properties: {
                             page: {
@@ -980,12 +1281,16 @@ Delegado:${delegado}`;
                                         alignment: docx.AlignmentType.RIGHT,
                                         font:'Arial',
                                         children: [
-                                            
-                                            new docx.TextRun("Superintendência da Polícia Técnico-Científica. Proibida divulgação ou cópia sem autorização. Página "),
+                                        new docx.TextRun({
+                                                font:'Arial',
+                                                alignment: docx.AlignmentType.RIGHT,
+                                                text: 'Superintendência da Polícia Técnico-Científica. Proibida divulgação ou cópia sem autorização. Página '
+                                            }),
                                             new docx.TextRun({
                                                 children: [docx.PageNumber.CURRENT]
                                             }),
                                             new docx.TextRun(" de "),
+                                            
                                             new docx.TextRun({
                                                 children: [docx.PageNumber.TOTAL_PAGES]
                                             }),
@@ -994,30 +1299,20 @@ Delegado:${delegado}`;
                                 ],
                             }),
                         },
-                        children: [
+                        properties: {
+                            page: {
+                                margin: {
+                                    top: 1440,
+                                    right: 1440,
+                                    bottom: 1440,
+                                    left: 1440
+                                }
+                            }
+                        },
+
+                        children: 
+                        arrParagraf,
                             
-                            new docx.Paragraph({
-                                children: [
-                                    new docx.TextRun({
-                                        text: document.getElementById('textoAnalisado').value
-                                    })
-                                ]
-                            }),
-                            new docx.Paragraph({
-                                children: [
-                                    new docx.TextRun({
-                                        text: document.getElementById('danosVeic').value
-                                    })
-                                ]
-                            }),
-                            new docx.Paragraph({
-                                children: [
-                                    new docx.TextRun({
-                                        text: document.getElementById('testesVeic').value
-                                    })
-                                ]
-                            })
-                        ]
                     }]
                 });
                 // Adicionar fotos ao documento
