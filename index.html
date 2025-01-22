@@ -204,6 +204,10 @@
     
     <button id='pegarFotos' onclick="pegaFotos()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Pegar Fotos</button>
     <button onclick="montaLaudo()" style="margin: 20px 0; padding: 10px 20px;">Gerar Documento Word</button>
+
+    <div id="bedeibagens" style="width: 100%">
+
+    </div>
     <script>
 
         // Array para armazenar os dadosGerais
@@ -913,11 +917,12 @@ Delegado:${delegado}`;
                         img.className = 'foto-importada';
                         img.style.marginTop = '10px';
                         img.style.width = '454';
-                        img.style.height = '340';
-                       
-                        document.body.appendChild(img);
+                        //img.style.inlineSize = '100%';
+                        //img.width = 454;
+                        document.getElementById('bedeibagens').appendChild(img);
 
                     }
+                    
                 };
 
                 // Acionar o seletor de arquivos
@@ -1124,6 +1129,39 @@ Delegado:${delegado}`;
                 
                 }
 
+                const fotos = document.getElementsByClassName('foto-importada');
+                let fotosss = [];
+                if (fotos.length > 0) {
+                    for (let foto of fotos) {
+                        // Converter imagem para base64
+                        const canvas = document.createElement('canvas');
+                        canvas.width = foto.width;
+                        canvas.height = foto.height;
+                        
+                        let ctx = canvas.getContext('2d');
+                      
+                        ctx.drawImage(foto,0,0);
+
+                        const base64 = canvas.toDataURL('image/jpeg').split(',')[1];
+
+                        // Adicionar imagem ao documento]
+                        
+                        let propFoto = 
+                                new docx.Paragraph({
+                                    children: [
+                                        new docx.ImageRun({
+                                            data: Uint8Array.from(atob(base64), c => c.charCodeAt(0)),
+                                            transformation: {
+                                                width: 454,
+                                                height: 340
+                                            }
+                                        })
+                                    ],
+                                    alignment: docx.AlignmentType.CENTER
+                                });
+                        fotosss.push(propFoto);
+                    }
+                }
                 // Criar novo documento
                 const doc = new docx.Document({
                     numbering: {
@@ -1314,44 +1352,12 @@ Delegado:${delegado}`;
                         },
 
                         children: 
-                        arrParagraf,
+                        arrParagraf.concat(fotosss)
                             
                     }]
                 });
                 // Adicionar fotos ao documento
-                const fotos = document.getElementsByClassName('foto-importada');
-
-                if (fotos.length > 0) {
-                    for (let foto of fotos) {
-                        // Converter imagem para base64
-                        const canvas = document.createElement('canvas');
-
-                        canvas.width = foto.width;
-                        canvas.height = foto.height;
-
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(foto, 0, 0);
-                        const base64 = canvas.toDataURL('image/jpeg').split(',')[1];
-
-                        // Adicionar imagem ao documento
-                        doc.addSection({
-                            children: [
-                                new docx.Paragraph({
-                                    children: [
-                                        new docx.ImageRun({
-                                            data: Uint8Array.from(atob(base64), c => c.charCodeAt(0)),
-                                            transformation: {
-                                                width: 454,
-                                                height: 340
-                                            }
-                                        })
-                                    ],
-                                    alignment: docx.AlignmentType.CENTER
-                                })
-                            ]
-                        });
-                    }
-                }
+                
 
                 // Gerar e baixar o arquivo
                 const blob = await docx.Packer.toBlob(doc);
