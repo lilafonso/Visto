@@ -201,15 +201,59 @@
     <textarea id="testesVeic" placeholder="Testes veiculares" name="testesVeic" rows="5"></textarea>
 
 
+    <div style="text-align:center; display: inline-flex; width: 100%; padding: 2px;">
+    <button id='pegarFotos' onclick="pegaFotos()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 75%;">Pegar Fotos</button>
+    <button id='apagarFotos' onclick="apagaFotos()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 25%;">Apagar Fotos</button>
     
-    <button id='pegarFotos' onclick="pegaFotos()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Pegar Fotos</button>
-    <button onclick="montaLaudo()" style="margin: 20px 0; padding: 10px 20px;">Gerar Documento Word</button>
+    </div>
+    <button onclick="abrirLegendasPadrao()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Editar Legendas</button>
+    <button onclick="montaLaudo()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Gerar Documento Word</button>
+
+    
+
+    <div id="popupLegendasPadrao" class="popup">
+        <h3>Legendas Padrão</h3>
+        <div>
+            <input type="checkbox" checked="true" id="legenda01"> <label for="legenda01">Porção anterior e lateral esquerda do veículo.</label><br>
+            <input type="checkbox" checked="true" id="legenda02"> <label for="legenda02">Porção anterior e lateral direita do veículo.</label><br>
+            <input type="checkbox" checked="true" id="legenda03"> <label for="legenda03">Porção posterior e lateral direita do veículo.</label><br>
+            <input type="checkbox" checked="true" id="legenda04"> <label for="legenda04">Porção posterior e lateral esquerda do veículo.</label><br>
+            <input type="checkbox" id="legenda05"> <label for="legenda05">Sede dos danos.</label><br>
+            <input type="checkbox" id="legenda06"> <label for="legenda06">Detalhes dos danos.</label><br>
+            <input type="checkbox" id="legenda06a"> <label for="legenda06a">Detalhes dos danos.</label><br>
+            <input type="checkbox" id="legenda06b"> <label for="legenda06b">Detalhes dos danos.</label><br>
+            <input type="checkbox" id="legenda06c"> <label for="legenda06c">Detalhes dos danos.</label><br>
+            <input type="checkbox" id="legenda07"> <label for="legenda07">Interior do veículo.</label><br>
+            <input type="checkbox" id="legenda08"> <label for="legenda08">Interior do veículo.</label><br>
+            <input type="checkbox" id="legenda09"> <label for="legenda09">Emplacamento posterior.</label><br>
+            <input type="checkbox" id="legenda10"> <label for="legenda10">Emplacamento anterior.</label><br>
+            <input type="checkbox" id="legenda11"> <label for="legenda11">Numeral VIN.</label><br>
+            <input type="checkbox" id="legenda12"> <label for="legenda12">Parte do numeral VIN.</label><br>
+            
+        </div>
+        <button onclick="fecharLegendasPadrao()" style="margin-top: 10px;">Fechar</button>
+    </div>
+    
 
     <div id="bedeibagens" style="width: 100%">
 
     </div>
     <script>
+        function apagaFotos() {
+            const fotos = document.querySelectorAll('.foto-importada, .foto-importada-secreta');
+            fotos.forEach(foto => {
+                foto.remove();
+            });
+        }
+        
+        function abrirLegendasPadrao() {
+            document.getElementById('popupLegendasPadrao').style.display = 'block';
+        }
 
+
+        function fecharLegendasPadrao() {
+            document.getElementById('popupLegendasPadrao').style.display = 'none';
+        }
         // Array para armazenar os dadosGerais
         let dadosGerais = [{
             naturezaDoExame:"",
@@ -885,9 +929,7 @@ Delegado:${delegado}`;
                 
                 input.onchange = async function(e) {
                     // Limpar fotos anteriores
-                    const fotosAnteriores = document.querySelectorAll('.foto-importada');
-                    fotosAnteriores.forEach(foto => foto.remove());
-
+                    
                     // Array para armazenar as fotos selecionadas
                     const fotos = [];
 
@@ -913,12 +955,18 @@ Delegado:${delegado}`;
                     for (const foto of fotos) {
                         const url = URL.createObjectURL(foto.arquivo);
                         const img = document.createElement('img');
+                        const img2 = document.createElement('img');
                         img.src = url;
+                        img2.src = url;
                         img.className = 'foto-importada';
+                        img2.className = 'foto-importada-secreta';
                         img.style.marginTop = '10px';
                         img.style.width = '454';
+                        img2.style.width = '100%';
+                        img.style.display = 'none';
                         //img.style.inlineSize = '100%';
                         //img.width = 454;
+                        document.getElementById('bedeibagens').appendChild(img2);
                         document.getElementById('bedeibagens').appendChild(img);
 
                     }
@@ -1129,10 +1177,18 @@ Delegado:${delegado}`;
                 
                 }
 
+                let legendasMarcadas = [];
+                const legendas = document.querySelectorAll('input[type="checkbox"]:checked + label');
+                legendas.forEach(legenda => {
+                    legendasMarcadas.push(legenda.textContent);
+                });
+                let indices = "0";
                 const fotos = document.getElementsByClassName('foto-importada');
                 let fotosss = [];
+
                 if (fotos.length > 0) {
                     for (let foto of fotos) {
+                        
                         // Converter imagem para base64
                         const canvas = document.createElement('canvas');
                         canvas.width = foto.width;
@@ -1148,6 +1204,11 @@ Delegado:${delegado}`;
                         
                         let propFoto = 
                                 new docx.Paragraph({
+                                    spacing:{
+                                        line: 250,
+                                        before: 20 * 72 * 0.1,
+                                        after: 20 * 72 * 0.01,
+                                    },
                                     children: [
                                         new docx.ImageRun({
                                             data: Uint8Array.from(atob(base64), c => c.charCodeAt(0)),
@@ -1159,9 +1220,37 @@ Delegado:${delegado}`;
                                     ],
                                     alignment: docx.AlignmentType.CENTER
                                 });
+                        let propLegendas = new docx.Paragraph({
+                           
+                            alignment: docx.AlignmentType.CENTER,
+
+                                spacing:{
+                                    line: 250,
+                                    before: 20 * 72 * 0.01,
+                                    after: 20 * 72 * 0.1,
+                                },
+
+                                children: [
+                                    new docx.TextRun({
+                                        text: legendasMarcadas[indices],
+                                        font:'Arial',
+                                        size: 24,
+                                        bold: false,
+                                    }),
+                                ],
+                            });
                         fotosss.push(propFoto);
+                        fotosss.push(propLegendas);
+                        indices++;
                     }
                 }
+
+                // Nova função para calcular o número de páginas. O resultado será no mínimo duas páginas
+                let numPaginas = Math.max(2, 1+Math.round((fotosss.length)/4));
+                if (fotosss.length==0) numPaginas =1;
+                //console.log(numPaginas);
+                let dataExt = new Date().getDate() + " de " + new Date().toLocaleString('pt-BR', { month: 'long' }) + " de " + new Date().getFullYear();
+
                 // Criar novo documento
                 const doc = new docx.Document({
                     numbering: {
@@ -1292,23 +1381,23 @@ Delegado:${delegado}`;
                                     new docx.Paragraph({
                                         font:'Arial',
                                         children: [
-                                            // new docx.ImageRun({
-                                            //     data: await fetch('cabecalho.png').then(r => r.arrayBuffer()),
-                                            //     transformation: {
-                                            //         width: 628,
-                                            //         height: 78
-                                            //     },
-                                            // }),
-                                            new docx.TextRun({
-                                                font:'Arial',
-                                                alignment: docx.AlignmentType.LEFT,
-                                                text: 'BO: '
-                                            }),          
-                                            new docx.TextRun({
-                                                font:'Arial',
-                                                alignment: docx.AlignmentType.RIGHT,
-                                                text: 'REP '
-                                            })   
+                                            new docx.ImageRun({
+                                                data: await fetch('cabecalho.png').then(r => r.arrayBuffer()),
+                                                transformation: {
+                                                    width: 628,
+                                                    height: 78
+                                                },
+                                            })
+                                            // new docx.TextRun({
+                                            //     font:'Arial',
+                                            //     alignment: docx.AlignmentType.LEFT,
+                                            //     text: 'BO: '
+                                            // }),          
+                                            // new docx.TextRun({
+                                            //     font:'Arial',
+                                            //     alignment: docx.AlignmentType.RIGHT,
+                                            //     text: 'REP '
+                                            // })   
                                   
                                         ],
                                     }),
@@ -1321,9 +1410,11 @@ Delegado:${delegado}`;
                                     new docx.Paragraph({
                                         alignment: docx.AlignmentType.RIGHT,
                                         font:'Arial',
+                                        size: 18,
                                         children: [
-                                        new docx.TextRun({
+                                            new docx.TextRun({
                                                 font:'Arial',
+                                                size: 18,
                                                 alignment: docx.AlignmentType.RIGHT,
                                                 text: 'Superintendência da Polícia Técnico-Científica. Proibida divulgação ou cópia sem autorização. Página '
                                             }),
@@ -1352,8 +1443,122 @@ Delegado:${delegado}`;
                         },
 
                         children: 
-                        arrParagraf.concat(fotosss)
-                            
+                        
+                            arrParagraf.concat(fotosss).concat(
+                                [new docx.Paragraph({
+                                    alignment: docx.AlignmentType.JUSTIFIED,
+                                    spacing:{
+                                        line: 250,
+                                        before: 20 * 72 * 0.01,
+                                        after: 20 * 72 * 0.01,
+                                    },
+                                    children: [
+                                        new docx.TextRun({
+                                            text: '\tEra o que havia a relatar.',
+                                            font:'Arial',
+                                            size: 24,
+                                            bold: false,
+                                        }),
+                                    ],
+                                }),
+                                new docx.Paragraph({
+                                    alignment: docx.AlignmentType.JUSTIFIED,
+                                    spacing:{
+                                        line: 250,
+                                        before: 20 * 72 * 0.1,
+                                        after: 20 * 72 * 0.01,
+                                    },
+                                    children: [
+                                        new docx.TextRun({
+                                            text: '\tEste laudo foi elaborado em ',
+                                            font:'Arial',
+                                            size: 24,
+                                            bold: false,
+                                        }),
+                                        new docx.TextRun({
+                                            text: numPaginas+' com cópia digital arquivada no Sistema Gestor de Documentos e Laudos da Superintendência da Polícia Técnico-Científica do Estado de São Paulo (Portaria SPTC 145/2012).',
+                                            font:'Arial',
+                                            size: 24,
+                                            bold: false,
+                                        }),
+                                        
+                                    ],
+                                }),
+                                new docx.Paragraph({
+                                    alignment: docx.AlignmentType.CENTER,
+                                    spacing:{
+                                        line: 250,
+                                        before: 20 * 72 * 0.1,
+                                        after: 20 * 72 * 0.01,
+                                    },
+                                    children: [
+                                        new docx.TextRun({
+                                            text: 'Americana, ',
+                                            font:'Arial',
+                                            size: 24,
+                                            bold: false,
+                                        }),
+                                        new docx.TextRun({
+                                            text: dataExt,
+                                            font:'Arial',
+                                            size: 24,
+                                            bold: false,
+                                        }),
+                                        
+                                    ],
+                                }),
+                                new docx.Paragraph({
+                                    alignment: docx.AlignmentType.CENTER,
+                                    spacing:{
+                                        line: 250,
+                                        before: 20 * 72 * 0.01,
+                                        after: 20 * 72 * 0.01,
+                                    },
+                                    children: [
+                                        new docx.TextRun({
+                                            text: '-assinado digitalmente-',
+                                            font:'Arial',
+                                            size: 24,
+                                            bold: false,
+                                        }),
+                                    ],
+                                }),
+                                new docx.Paragraph({
+                                    alignment: docx.AlignmentType.CENTER,
+                                    spacing:{
+                                        line: 250,
+                                        before: 20 * 72 * 0.01,
+                                        after: 20 * 72 * 0.01,
+                                    },
+                                    children: [
+                                        new docx.TextRun({
+                                            text: dadosGerais.Perito,
+                                            font:'Arial',
+                                            size: 24,
+                                            bold: false,
+                                        }),
+                                    ],
+                                }),
+                                new docx.Paragraph({
+                                    alignment: docx.AlignmentType.CENTER,
+                                    spacing:{
+                                        line: 250,
+                                        before: 20 * 72 * 0.01,
+                                        after: 20 * 72 * 0.01,
+                                    },
+                                    children: [
+                                        new docx.TextRun({
+                                            text: 'Perito Criminal',
+                                            font:'Arial',
+                                            size: 24,
+                                            bold: false,
+                                        }),
+                                    ],
+                                })
+                                ]
+                            )
+
+                        
                     }]
                 });
                 // Adicionar fotos ao documento
