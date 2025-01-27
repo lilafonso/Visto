@@ -23,6 +23,8 @@
         </div>
     <textarea id="dadosBase" name="dadosBase" rows="5"></textarea>
     
+    <label for="REP">Digite o número da REP: <input id="REP" type="text" pattern="[0-9]{6}"></label>
+
     <p>Capture uma imagem, abra uma foto ou cole o texto extraído OCR:</p>
     <div style="text-align:center; display: inline-flex; width: 100%; padding: 2px;">
     <button id='captFoto' onclick="capturarFoto()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; height: 70px; width: 50%;">Capturar Foto</button>
@@ -270,7 +272,8 @@
             protocolo:"",
             bo:"",
             delegacia:"",
-            delegado:""
+            delegado:"",
+            REP:""
         }];
 
         function abrirPopupTeste() {
@@ -902,6 +905,9 @@ Equipe:`;
             dadosGerais.delegacia = delegacia.toUpperCase();
             // Montar texto de resultado
 
+            dadosGerais.REP = document.getElementById('REP').value;
+
+             
             const resultado = `Natureza do Exame: ${naturezaDoExame}
 Tipo: ${tipo}
 Placa: ${placa}
@@ -912,7 +918,8 @@ Cor: ${cor}
 Protocolo: ${protocolo}
 BO: ${bo}
 Delegacia:${delegacia}
-Delegado:${delegado}`;
+Delegado:${delegado}
+REP:${dadosGerais.REP}`;
 
             textoAnalisado.value = resultado;
 
@@ -1000,6 +1007,48 @@ Delegado:${delegado}`;
                 }
                 else if (linha.startsWith('Equipe:')) {
                     dadosGerais.Equipe = linha.replace('Equipe:', '').trim();
+                }
+            }
+            const textoAnalisado = document.getElementById('textoAnalisado').value;
+            let linhasTextoAnalisado = textoAnalisado.split('\n');
+
+            for (let linha of linhasTextoAnalisado) {
+                if (linha.startsWith('Delegado:')) {
+                    dadosGerais.delegado = linha.replace('Delegado:', '').trim();
+                }
+                else if (linha.startsWith('Delegacia:')) {
+                    dadosGerais.delegacia = linha.replace('Delegacia:', '').trim();
+                }
+                else if (linha.startsWith('Chassi:')) {
+                    dadosGerais.chassi = linha.replace('Chassi:', '').trim();
+                }
+                
+                else if (linha.startsWith('Natureza do Exame:')) {
+                    dadosGerais.naturezaDoExame = linha.replace('Natureza do Exame:', '').trim();
+                }
+                else if (linha.startsWith('Tipo:')) {
+                    dadosGerais.tipo = linha.replace('Tipo:', '').trim();
+                }
+                else if (linha.startsWith('Marca:')) {
+                    dadosGerais.marca = linha.replace('Marca:', '').trim();
+                }
+                else if (linha.startsWith('Cor:')) {
+                    dadosGerais.cor = linha.replace('Cor:', '').trim();
+                }
+                else if (linha.startsWith('Ano de Fabricação:')) {
+                    dadosGerais.anoFabricacao = linha.replace('Ano de Fabricação:', '').trim();
+                }
+                else if (linha.startsWith('Placa:')) {
+                    dadosGerais.placa = linha.replace('Placa:', '').trim();
+                }
+                else if (linha.startsWith('Protocolo:')) {
+                    dadosGerais.protocolo = linha.replace('Protocolo:', '').trim();
+                }
+                else if (linha.startsWith('BO:')) {
+                    dadosGerais.bo = linha.replace('BO:', '').trim();
+                }
+                else if (linha.startsWith('REP:')) {
+                    dadosGerais.REP = linha.replace('REP:', '').trim();
                 }
             }
 
@@ -1206,7 +1255,7 @@ Delegado:${delegado}`;
                                 new docx.Paragraph({
                                     spacing:{
                                         line: 250,
-                                        before: 20 * 72 * 0.1,
+                                        before: 20 * 72 * 0.05,
                                         after: 20 * 72 * 0.01,
                                     },
                                     children: [
@@ -1226,8 +1275,8 @@ Delegado:${delegado}`;
 
                                 spacing:{
                                     line: 250,
-                                    before: 20 * 72 * 0.01,
-                                    after: 20 * 72 * 0.1,
+                                    before: 10 * 72 * 0.01,
+                                    after: 20 * 72 * 0.05,
                                 },
 
                                 children: [
@@ -1246,8 +1295,28 @@ Delegado:${delegado}`;
                 }
 
                 // Nova função para calcular o número de páginas. O resultado será no mínimo duas páginas
-                let numPaginas = Math.max(2, 1+Math.round((fotosss.length)/4));
-                if (fotosss.length==0) numPaginas =1;
+                let numPaginas = 1;
+                let numFotos = Math.round((fotosss.length)/2);
+                let linhasDanosVeic = document.getElementById('danosVeic').value.split('\n');
+                let numDanos = linhasDanosVeic.length;
+                //Math.max(2, 1+Math.round((fotosss.length)/4));
+                if(numDanos>=2){
+                    numPaginas++;
+                }
+
+                if(numDanos>=2&&numFotos==0){
+                    numPaginas = 1;
+                }
+
+                if(numDanos>=1&&numFotos==1){
+                    numPaginas = 1;
+                }
+
+                numPaginas = numPaginas + Math.ceil(numFotos/2);                
+                
+
+                let numPaginasExtenso = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(numPaginas).replace('R$', '').trim();
+                numPaginas = ""+numPaginas+"(" + (numPaginas==2? 'duas':numPaginasExtenso)+")" + " página"+(numPaginas==1?"":"s");
                 //console.log(numPaginas);
                 let dataExt = new Date().getDate() + " de " + new Date().toLocaleString('pt-BR', { month: 'long' }) + " de " + new Date().getFullYear();
 
@@ -1563,10 +1632,21 @@ Delegado:${delegado}`;
                 });
                 // Adicionar fotos ao documento
                 
+                let nomeArq = "laudo";
+                const data = new Date();
+                const hora = data.getHours() + "_" + data.getMinutes() + "_" + data.getSeconds();
+                const dia = data.getDate() + "_" + (data.getMonth() + 1) + "_" + data.getFullYear();
+                nomeArq = `_${dia}_${hora}`;
 
+                if (dadosGerais.protocolo) {
+                    nomeArq = `prot_${dadosGerais.protocolo}`;
+                }
+                if (dadosGerais.REP) {
+                    nomeArq += `${dadosGerais.REP}_${data.getFullYear()}`;
+                }
                 // Gerar e baixar o arquivo
                 const blob = await docx.Packer.toBlob(doc);
-                saveAs(blob, "laudo.docx");
+                saveAs(blob, nomeArq);
 
             } catch (erro) {
                 console.error('Erro ao gerar documento:', erro);
