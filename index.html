@@ -204,8 +204,8 @@
 
 
     <div style="text-align:center; display: inline-flex; width: 100%; padding: 2px;">
-    <button id='pegarFotos' onclick="pegaFotos()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 75%;">Pegar Fotos</button>
-    <button id='apagarFotos' onclick="apagaFotos()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 25%;">Apagar Fotos</button>
+    <button id='pegarFotos' onclick="pegaFotos()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 60%;">Pegar Fotos</button>
+    <button id='apagarFotos' onclick="apagaFotos()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 40%;">Apagar Fotos</button>
     
     </div>
     <button onclick="abrirLegendasPadrao()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Editar Legendas</button>
@@ -1338,11 +1338,12 @@ REP:${dadosGerais.REP}`;
                     numPaginas = 1;
                 }
 
-                numPaginas = numPaginas + Math.ceil(numFotos/2);                
+                numPaginas = numPaginas + Math.floor(numFotos/2);                
                 
 
-                let numPaginasExtenso = numPaginas.extenso();
-                numPaginas = ""+numPaginas+"(" + (numPaginas==2? 'duas':numPaginasExtenso)+")" + " página"+(numPaginas==1?"":"s");
+                let numPaginasExtenso = ""+numPaginas;
+                numPaginasExtenso = numPaginasExtenso.extenso(false);
+                numPaginas = ""+numPaginas+" (" + (numPaginas==2? 'duas':numPaginasExtenso)+")" + " página"+(numPaginas==1?"":"s");
                 //console.log(numPaginas);
                 let dataExt = new Date().getDate() + " de " + new Date().toLocaleString('pt-BR', { month: 'long' }) + " de " + new Date().getFullYear();
 
