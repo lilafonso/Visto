@@ -9,6 +9,8 @@
     <script src="https://unpkg.com/docx@7.1.0/build/index.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
+
+
 </head>
 <body>
     <img id="cabeca" src="cabecalho.png" alt="Cabeçalho" style="width: 100%; ">
@@ -458,6 +460,7 @@
 
         // Carregar dados padrão do arquivo pref.csv
         window.onload = function() {
+
             const dadosBase = document.getElementById('dadosBase');
             dadosBase.value = 
 `Perito: Leonardo Reis da Silva
@@ -925,6 +928,28 @@ REP:${dadosGerais.REP}`;
 
         }
 
+
+        const compressImage = async (file, { quality = 1, type = file.type }) => {
+            // Get as image data
+            const imageBitmap = await createImageBitmap(file);
+
+            // Draw to canvas
+            const canvas = document.createElement('canvas');
+            canvas.width = imageBitmap.width;
+            canvas.height = imageBitmap.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(imageBitmap, 0, 0);
+
+            // Turn into Blob
+            const blob = await new Promise((resolve) =>
+                canvas.toBlob(resolve, type, quality)
+            );
+
+            // Turn Blob into File
+            return new File([blob], file.name, {
+                type: blob.type,
+            });
+        };
         async function pegaFotos() {
             try {
                 // Solicitar permissão para acessar arquivos
@@ -935,8 +960,7 @@ REP:${dadosGerais.REP}`;
                 input.accept = 'image/*';
                 
                 input.onchange = async function(e) {
-                    // Limpar fotos anteriores
-                    
+                                        
                     // Array para armazenar as fotos selecionadas
                     const fotos = [];
 
@@ -949,18 +973,29 @@ REP:${dadosGerais.REP}`;
                             arquivo: arquivo,
                             data: dataModificacao
                         });
+
                     }
 
-                    // Filtrar apenas fotos dos últimos 10 minutos
-                    // const dezMinutosAtras = Date.now() - (10 * 60 * 1000);
-                    // const fotosRecentes = fotos.filter(foto => foto.data >= dezMinutosAtras);
-
                     // Ordenar fotos por data de modificação (mais recentes primeiro)
-                    fotos.sort((a, b) => b.data - a.data);
+                    // fotos.sort((a, b) => b.data - a.data);
 
                     // Criar elementos de imagem para as fotos selecionadas
+
+
+
+
+
                     for (const foto of fotos) {
-                        const url = URL.createObjectURL(foto.arquivo);
+                        const compressedFile = await compressImage(foto.arquivo, {
+                            // 0: is maximum compression
+                            // 1: is no compression
+                            quality: 0.2,
+
+                            // We want a JPEG file
+                            type: 'image/jpeg',
+                        });
+                        const url = URL.createObjectURL(compressedFile);
+
                         const img = document.createElement('img');
                         const img2 = document.createElement('img');
                         img.src = url;
