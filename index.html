@@ -211,7 +211,7 @@
     
     </div>
     <button onclick="abrirLegendasPadrao()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Editar Legendas</button>
-    <button onclick="montaLaudo()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Gerar Documento Word</button>
+    <button id="gerarDocumentoWord" onclick="montaLaudo()" style="padding: 10px 30px; font-size: 1.2em; margin: 5px 0; width: 100%;">Gerar Documento Word</button>
 
     
 
@@ -277,6 +277,22 @@
             delegado:"",
             REP:""
         }];
+        dadosGerais.naturezaDoExame = "";
+        dadosGerais.Perito = "";
+        dadosGerais.Diretor = "";
+        dadosGerais.Nucleo = "";
+        dadosGerais.Equipe = "";
+        dadosGerais.placa = "";
+        dadosGerais.chassi = "";
+        dadosGerais.tipo = "";
+        dadosGerais.anoFabricacao = "";
+        dadosGerais.marca = "";
+        dadosGerais.cor = "";
+        dadosGerais.protocolo = "";
+        dadosGerais.bo = "";
+        dadosGerais.delegacia = "";
+        dadosGerais.delegado = "";
+        dadosGerais.REP = "";
 
         function abrirPopupTeste() {
             document.getElementById('popupTeste').style.display = 'block';
@@ -699,6 +715,9 @@ Equipe:`;
 
             areaTexto.value = 'Processando...';
 
+
+
+            
             Tesseract.recognize(
                 canvas,
                 'por', // Idioma português
@@ -723,9 +742,9 @@ Equipe:`;
             const texto = document.getElementById('textoOCR').value;
             const textoAnalisado = document.getElementById('textoAnalisado');
             
-            let naturezaDoExame = '';
-            let placa = '';
-            let chassi = '';
+            let naturezaDoExame = "";
+            let placa = "";
+            let chassi = "";
             
             // Procurar Natureza do Exame
             const regexNatureza = /Natureza do Exame:?\s*([^\n]+)/i;
@@ -1026,6 +1045,7 @@ REP:${dadosGerais.REP}`;
         
 
         function montaLaudo(){
+            document.getElementById('gerarDocumentoWord').disabled = true;
             const dadosBase = document.getElementById('dadosBase').value;
             let linhas = dadosBase.split('\n');
 
@@ -1095,14 +1115,14 @@ REP:${dadosGerais.REP}`;
             var mesExtenso = ["janeiro", "fevereiro", "março", "abril", "maio","junho","julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
             
             let data =	
-            '\tEm '+ day + " de "+mesExtenso[currentDate.getMonth()]+" de "+currentDate.getFullYear() + (dadosGerais.Equipe!=""? ', na '+dadosGerais.Equipe: "") + (dadosGerais.Nucleo!=""? ', no '+dadosGerais.Nucleo: "")+', do Instituto de Criminalística, da Superintendência da Polícia Técnico-Científica, da Secretaria de Segurança Pública do Estado de São Paulo, em conformidade com o disposto no Decreto-Lei n.º 3.689/41, o Diretor deste instituto '+ dadosGerais.Diretor+' designou o Perito Criminal '+(dadosGerais.Perito!=""? dadosGerais.Perito: "signatário") +' para proceder a este exame pericial, em atendimento à requisição da autoridade de polícia judiciária da '+ dadosGerais.delegacia + (dadosGerais.delegado!=""? ', '+dadosGerais.delegado+'.' : ".");
+            '\tEm '+ day + " de "+mesExtenso[currentDate.getMonth()]+" de "+currentDate.getFullYear() + (dadosGerais.Equipe!=""? ', na '+dadosGerais.Equipe: "") + (dadosGerais.Nucleo!=""? ', no '+dadosGerais.Nucleo: "")+', do Instituto de Criminalística, da Superintendência da Polícia Técnico-Científica, da Secretaria de Segurança Pública do Estado de São Paulo, em conformidade com o disposto no Decreto-Lei n.º 3.689/41, o Diretor deste instituto '+ dadosGerais.Diretor+' designou o Perito Criminal '+(dadosGerais.Perito!=""? dadosGerais.Perito: "signatário") +' para proceder a este exame pericial, em atendimento à requisição da autoridade de polícia judiciária'+ (dadosGerais.delegacia!=""? " da "+dadosGerais.delegacia : "") + (dadosGerais.delegado!=""? ', Dr(a). '+dadosGerais.delegado+'.' : ".");
             
             let aL = [data]; // array de laudo - armazena os textos e o formata {1 - preambulo}
             let fT = [0];
 
             aL.push("DISPOSIÇÕES PRELIMINARES"); fT.push(1);
             
-            data = "\tVeículo apresentado na sede dest" + (dadosGerais.Equipe==""? ""+(dadosGerais.Nucleo!=""? "a Repartição": "e Núcleo") : "a Equipe") +", pela vítima ou seu representante, dotada de Requisição IC e Boletim de Ocorrência, para exame de natureza/objetivo: "+(dadosGerais.naturezaDoExame==""? "Constatação de Danos": dadosGerais.naturezaDoExame)+ ".";
+            data = "\tVeículo apresentado na sede dest" + (dadosGerais.Equipe==""? ""+(dadosGerais.Nucleo==""? "a Repartição": "e Núcleo") : "a Equipe") +", pela vítima ou seu representante, dotada de Requisição IC " +(dadosGerais.protocolo==""?"":"(Protocolo: "+dadosGerais.protocolo+")")+ " e Boletim de Ocorrência " +(dadosGerais.bo==""?"":"(BO: "+dadosGerais.bo+")")+ ", para exame de natureza/objetivo: "+(dadosGerais.naturezaDoExame==""? "Constatação de Danos": dadosGerais.naturezaDoExame)+ ".";
 
             aL.push(data); fT.push(0);
 
@@ -1149,7 +1169,7 @@ REP:${dadosGerais.REP}`;
         //@ http://jsfromhell.com/string/extenso [rev. #3]
         String.prototype.extenso = function(c){
             var ex = [
-            ["zero", "uma", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez", "onze", "doze", "treze", "quatorze", "quinze", "dezesseis", "dezessete", "dezoito", "dezenove"],
+            ["zero", "uma", "duas", "três", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez", "onze", "doze", "treze", "quatorze", "quinze", "dezesseis", "dezessete", "dezoito", "dezenove"],
             ["dez", "vinte", "trinta", "quarenta", "cinqüenta", "sessenta", "setenta", "oitenta", "noventa"],
             ["cem", "cento", "duzentos", "trezentos", "quatrocentos", "quinhentos", "seiscentos", "setecentos", "oitocentos", "novecentos"],
             ["mil", "milhão", "bilhão", "trilhão", "quadrilhão", "quintilhão", "sextilhão", "setilhão", "octilhão", "nonilhão", "decilhão", "undecilhão", "dodecilhão", "tredecilhão", "quatrodecilhão", "quindecilhão", "sedecilhão", "septendecilhão", "octencilhão", "nonencilhão"]
@@ -1357,28 +1377,17 @@ REP:${dadosGerais.REP}`;
 
                 // Nova função para calcular o número de páginas. O resultado será no mínimo duas páginas
                 let numPaginas = 1;
-                let numFotos = Math.round((fotosss.length)/2);
-                let linhasDanosVeic = document.getElementById('danosVeic').value.split('\n');
-                let numDanos = linhasDanosVeic.length;
-                //Math.max(2, 1+Math.round((fotosss.length)/4));
-                if(numDanos>=2){
-                    numPaginas++;
-                }
-
-                if(numDanos>=2&&numFotos==0){
-                    numPaginas = 1;
-                }
-
-                if(numDanos>=1&&numFotos==1){
-                    numPaginas = 1;
-                }
-
-                numPaginas = numPaginas + Math.floor(numFotos/2);                
                 
+                
+                
+                let numFotos = Math.round((fotosss.length)/2);
+                numPaginas = Math.floor(numFotos/2)+1;
+                if (numFotos==1)numPaginas = 2;
+
 
                 let numPaginasExtenso = ""+numPaginas;
                 numPaginasExtenso = numPaginasExtenso.extenso(false);
-                numPaginas = ""+numPaginas+" (" + (numPaginas==2? 'duas':numPaginasExtenso)+")" + " página"+(numPaginas==1?"":"s");
+                numPaginas = ""+numPaginas+" (" + numPaginasExtenso +")" + " página"+(numPaginas==1?"":"s");
                 //console.log(numPaginas);
                 let dataExt = new Date().getDate() + " de " + new Date().toLocaleString('pt-BR', { month: 'long' }) + " de " + new Date().getFullYear();
 
@@ -1714,6 +1723,7 @@ REP:${dadosGerais.REP}`;
                 console.error('Erro ao gerar documento:', erro);
                 alert('Erro ao gerar documento Word');
             }
+            document.getElementById('gerarDocumentoWord').disabled = false;
         }
    
     
