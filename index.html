@@ -218,10 +218,10 @@
     <div id="popupLegendasPadrao" class="popup">
         <h3>Legendas Padrão</h3>
         <div>
-            <input type="checkbox" checked="true" id="legenda01"> <label for="legenda01">Porção anterior e lateral esquerda do veículo.</label><br>
-            <input type="checkbox" checked="true" id="legenda02"> <label for="legenda02">Porção anterior e lateral direita do veículo.</label><br>
-            <input type="checkbox" checked="true" id="legenda03"> <label for="legenda03">Porção posterior e lateral direita do veículo.</label><br>
-            <input type="checkbox" checked="true" id="legenda04"> <label for="legenda04">Porção posterior e lateral esquerda do veículo.</label><br>
+            <input type="checkbox" checked="true" id="legenda01"> <label for="legenda01">Vista geral do veículo.</label><br>
+            <input type="checkbox" checked="true" id="legenda02"> <label for="legenda02">Vista geral do veículo.</label><br>
+            <input type="checkbox" checked="true" id="legenda03"> <label for="legenda03">Vista geral do veículo.</label><br>
+            <input type="checkbox" checked="true" id="legenda04"> <label for="legenda04">Vista geral do veículo.</label><br>
             <input type="checkbox" id="legenda05"> <label for="legenda05">Sede dos danos.</label><br>
             <input type="checkbox" id="legenda06"> <label for="legenda06">Detalhes dos danos.</label><br>
             <input type="checkbox" id="legenda06a"> <label for="legenda06a">Detalhes dos danos.</label><br>
@@ -916,7 +916,7 @@ Equipe:`;
             // Procurar Delegacia
             let delegacia = '';
             //const regexDelegacia = /(?:\d{3}\s*[-]?\s*)?([^,\n]*Delegacia[^,\n]*)/i;
-            const regexDelegacia = /Delegacia :?\s*([^\n]+)/i;
+            const regexDelegacia = /Delegacia?\s*([^\n]+)/i;
             const matchDelegacia = texto.match(regexDelegacia);
             
             if (matchDelegacia) {
