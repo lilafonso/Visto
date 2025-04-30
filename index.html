@@ -513,46 +513,9 @@ Equipe:`;
             a.click();
             window.URL.revokeObjectURL(url);
         }
-
-
-
-        
-        let video = document.getElementById('camera');
-        let canvas = document.getElementById('foto');
         
         let resultado = document.getElementById('resultado');
-        let botaoCaptFoto = document.getElementById('captFoto');
-        let botaoAbreFoto = document.getElementById('abrirFoto');
-
-        // Iniciar câmera
-        // Tentar iniciar com a câmera traseira primeiro
-        navigator.mediaDevices.getUserMedia({
-            video: {
-            facingMode: { exact: "environment" }, //camera traseira;
-            width: { min: 1280, ideal: 1920 },
-            height: { min: 720, ideal: 1080 },
-            zoom: true,
-            advanced: [{
-                exposureMode: "manual",
-                focusMode: "continuous"
-            }]
-            }
-        })
-        .then(stream => {
-            video.srcObject = stream;
-        })
-        .catch(erro => {
-            console.error('Erro ao acessar câmera traseira:', erro);
-            // Se falhar, tenta acessar qualquer câmera disponível
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(stream => {
-                    video.srcObject = stream;
-                })
-                .catch(erroFallback => {
-                    console.error('Erro ao acessar câmera:', erroFallback);
-                    alert('Não foi possível acessar nenhuma câmera.');
-                });
-        });
+        
         function abrirFoto() {
             // Criar input de arquivo oculto
             let input = document.createElement('input');
