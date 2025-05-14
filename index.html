@@ -1080,8 +1080,8 @@ REP:${dadosGerais.REP}`;
             let data =	
             '\tEm '+ day + " de "+mesExtenso[currentDate.getMonth()]+" de "+currentDate.getFullYear() + (dadosGerais.Equipe!=""? ', na '+dadosGerais.Equipe: "") + (dadosGerais.Nucleo!=""? ', no '+dadosGerais.Nucleo: "")+', do Instituto de Criminalística, da Superintendência da Polícia Técnico-Científica, da Secretaria de Segurança Pública do Estado de São Paulo, em conformidade com o disposto no Decreto-Lei n.º 3.689/41, o Diretor deste instituto '+ dadosGerais.Diretor+' designou o Perito Criminal '+(dadosGerais.Perito!=""? dadosGerais.Perito: "signatário") +' para proceder a este exame pericial, em atendimento à requisição da autoridade de polícia judiciária'+ (dadosGerais.delegacia!=""? " da "+dadosGerais.delegacia : "") + (dadosGerais.delegado!=""? ', Dr(a). '+dadosGerais.delegado+'.' : ".");
             
-            let aL = [data]; // array de laudo - armazena os textos e o formata {1 - preambulo}
-            let fT = [0];
+            aL.push(data);
+            fT.push(0);
 
             aL.push("DISPOSIÇÕES PRELIMINARES"); fT.push(1);
             
