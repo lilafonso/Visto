@@ -1324,11 +1324,6 @@ REP:${dadosGerais.REP}`;
                                         before: 20 * 72 * 0.05,
                                         after: 20 * 72 * 0.01,
                                     },
-                                    children: [
-                                        new docx.ImageRun({
-                                            data: Uint8Array.from(atob(base64), c => c.charCodeAt(0))                                            
-                                        })
-                                    ],
                                     alignment: docx.AlignmentType.CENTER
                                 });
                         let propLegendas = new docx.Paragraph({
