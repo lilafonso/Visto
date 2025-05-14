@@ -944,10 +944,6 @@ REP:${dadosGerais.REP}`;
 
                     // Criar elementos de imagem para as fotos selecionadas
 
-
-
-
-
                     for (const foto of fotos) {
                         const compressedFile = await compressImage(foto.arquivo, {
                             // 0: is maximum compression
@@ -966,7 +962,7 @@ REP:${dadosGerais.REP}`;
                         img.className = 'foto-importada';
                         img2.className = 'foto-importada-secreta';
                         img.style.marginTop = '10px';
-                        img.style.width = '454';
+                        img.style.width = '100%';
                         img2.style.width = '100%';
                         img.style.display = 'none';
                         //img.style.inlineSize = '100%';
@@ -1303,7 +1299,10 @@ REP:${dadosGerais.REP}`;
 
                 if (fotos.length > 0) {
                     for (let foto of fotos) {
-                        if (!foto || !foto.complete || foto.naturalWidth === 0) continue; 
+                        if (!foto || !foto.width) {
+                           console.error("Erro: imagem não definida ou sem propriedades.");
+                           return;
+                        }
                      
                         // Converter imagem para base64
                         const canvas = document.createElement('canvas');
