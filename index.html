@@ -1303,11 +1303,12 @@ REP:${dadosGerais.REP}`;
 
                 if (fotos.length > 0) {
                     for (let foto of fotos) {
-                        
+                        if (!foto || !foto.complete || foto.naturalWidth === 0) continue; 
+                     
                         // Converter imagem para base64
                         const canvas = document.createElement('canvas');
-                        canvas.width = foto.width;
-                        canvas.height = foto.height;
+                        canvas.width = foto.naturalWidth;
+                        canvas.height = foto.naturalHeight;
                         
                         let ctx = canvas.getContext('2d');
                       
